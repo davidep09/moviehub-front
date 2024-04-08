@@ -1,31 +1,31 @@
-import React, {useState} from "react";
+import React from "react";
 import {
     Accordion,
     AccordionItem,
     Card,
     Image,
     Textarea,
-    Modal,
-    ModalHeader,
-    ModalContent,
-    Button, useDisclosure
+    Button
 } from "@nextui-org/react";
 
 export default function SerieSeasons({seasons}) {
     return (
-        <div className="sm:w-[90%] mx-auto">
+        <div className="sm:w-[90%] mx-auto flex flex-col items-center justify-center sm:items-start">
             <h1 className="text-2xl font-bold text-center mt-2">Temporadas</h1>
             <Accordion variant="light" className="shadow-none">
                 {seasons && seasons.map((season, index) => (
                     <AccordionItem key={index} title={season.name} className="shadow-none">
-                        <Card className="flex flex-row p-3 shadow-none">
-                            <div className="w-64 h-64">
+                        <Card className="flex flex-col sm:flex-row p-3 shadow-none items-center sm:items-start">
+                            <div className="w-64 h-64 flex items-center justify-center">
                                 <Image src={season.poster_path} className="h-64 object-cover"/>
                             </div>
-                            <div className="w-[80%]">
-                                <p className="mt-4 ml-2">Episodios: {season.episode_count}</p>
-                                <p className="ml-2">Fecha de estreno: {season.air_date}</p>
+                            <div className="w-[80%] sm:flex sm:flex-col items-center sm:items-start">
+                                <p className="text-center">Episodios: {season.episode_count}</p>
+                                <p className="text-center">Fecha de estreno: {season.air_date}</p>
                                 <Textarea className="mt-2" isReadOnly value={season.overview}/>
+                                <div className="flex justify-center w-full">
+                                    <Button className="mt-2 w-1/2" auto>Ver episodios</Button>
+                                </div>
                             </div>
                         </Card>
                     </AccordionItem>
