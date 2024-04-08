@@ -5,6 +5,7 @@ import {Divider} from "@nextui-org/react";
 import Navigation from "../components/Navigation.jsx";
 import SerieHeader from "../components/SerieHeader.jsx";
 import SerieSeasons from "../components/SerieSeasons.jsx";
+import Footer from "../components/Footer.jsx";
 
 export default function Serie() {
     const {id} = useParams();
@@ -37,7 +38,8 @@ export default function Serie() {
                         name: season.name,
                         episode_count: season.episode_count,
                         air_date: season.air_date,
-                        poster_path: `https://image.tmdb.org/t/p/w500${season.poster_path}`
+                        poster_path: `https://image.tmdb.org/t/p/w500${season.poster_path}`,
+                        overview: season.overview
                     })),
                     numSeasons: response.number_of_seasons
                 };
@@ -57,6 +59,8 @@ export default function Serie() {
                     .catch(err => console.error(err));
             })
             .catch(err => console.error(err));
+
+        console.log(datosSerie);
     }, []);
     return (
         <>
@@ -64,6 +68,7 @@ export default function Serie() {
             <Divider/>
             <SerieHeader datosSerie={datosSerie}/>
             <SerieSeasons seasons={datosSerie.seasons}/>
+            <Footer/>
         </>
     );
 }
