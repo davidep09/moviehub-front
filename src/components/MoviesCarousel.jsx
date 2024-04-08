@@ -1,6 +1,7 @@
 import {Pagination, Spacer} from "@nextui-org/react";
 import CustomCard from "./CustomCard.jsx";
 
+// eslint-disable-next-line react/prop-types
 export default function MoviesCarousel({movies, page, totalPages, onPageChange}) {
     return (
         <>
@@ -13,7 +14,7 @@ export default function MoviesCarousel({movies, page, totalPages, onPageChange})
                 ))}
             </div>
             <Spacer y={2}/>
-            <div className="flex justify-center">
+            <div className="flex justify-center mb-6">
                 <Pagination showControls total={totalPages} page={page} isCompact onChange={onPageChange}/>
             </div>
         </>

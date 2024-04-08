@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 import Navigation from "../components/Navigation.jsx";
 import MoviesCarousel from "../components/MoviesCarousel.jsx";
 import {Divider} from "@nextui-org/react";
+import Footer from "../components/Footer.jsx";
 
 export default function Trends() {
     const [movies, setMovies] = useState([]);
@@ -46,6 +47,7 @@ export default function Trends() {
             <Divider/>
             <h1 className="text-2xl text-center mt-4">Tendencias de hoy</h1>
             <MoviesCarousel movies={movies} page={page} totalPages={totalPages} onPageChange={handlePageChange}/>
+            <Footer/>
         </>
     );
 }

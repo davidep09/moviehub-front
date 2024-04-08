@@ -1,4 +1,3 @@
-import React from "react";
 import {
     Accordion,
     AccordionItem,
@@ -8,11 +7,13 @@ import {
     Button
 } from "@nextui-org/react";
 
+// eslint-disable-next-line react/prop-types
 export default function SerieSeasons({seasons}) {
     return (
         <div className="sm:w-[90%] mx-auto flex flex-col items-center justify-center sm:items-start">
             <h1 className="text-2xl font-bold text-center mt-2">Temporadas</h1>
             <Accordion variant="light" className="shadow-none">
+                {/* eslint-disable-next-line react/prop-types */}
                 {seasons && seasons.map((season, index) => (
                     <AccordionItem key={index} title={season.name} className="shadow-none">
                         <Card className="flex flex-col sm:flex-row p-3 shadow-none items-center sm:items-start">
