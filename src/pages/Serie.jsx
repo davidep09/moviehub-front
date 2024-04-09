@@ -31,7 +31,7 @@ export default function Serie() {
                     poster_path: `https://image.tmdb.org/t/p/w500${response.poster_path}`,
                     first_air_date: response.first_air_date,
                     vote_average: response.vote_average,
-                    overview: response.overview,
+                    overview: response.overview ? response.overview : 'No hay sinopsis disponible.',
                     status: response.status,
                     seasons: response.seasons.map(season => ({
                         id: season.id,
@@ -50,7 +50,7 @@ export default function Serie() {
                     .then(response => {
                         serieData.cast = response.cast.slice(0, 10).map(actor => ({
                             name: actor.name,
-                            profile_path: `https://image.tmdb.org/t/p/w500${actor.profile_path}`,
+                            profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "",
                             roles: actor.roles.map(role => role.character)
                         }));
 
