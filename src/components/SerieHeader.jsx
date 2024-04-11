@@ -48,7 +48,7 @@ export default function SerieHeader({datosSerie}) {
                     value={datosSerie.overview}
                     className="mt-4 mx-auto sm:mx-0"
                 />
-                <Button className="mt-4 max-w-10" onPress={onOpen}>
+                <Button className="mt-4 max-w-32" onPress={onOpen}>
                     Reparto
                 </Button>
             </div>

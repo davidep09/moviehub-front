@@ -29,7 +29,7 @@ export default function Movie() {
                     release_date: response.release_date,
                     vote_average: response.vote_average,
                     overview: response.overview ? response.overview : 'No hay sinopsis disponible.',
-                    status: response.status
+                    status: response.status,
                 };
 
                 // Fetch cast y crew data
@@ -47,6 +47,18 @@ export default function Movie() {
                             roles: crew.job
                         }));
 
+                        setDatosPelicula(movieData);
+                    })
+                    .catch(err => console.error(err));
+
+                // Fetch videos data
+                fetch(`https://api.themoviedb.org/3/movie/${id}/videos?language=es-ES`, options)
+                    .then(response => response.json())
+                    .then(response => {
+                        const trailer = response.results.find(video => video.type === 'Trailer');
+                        if (trailer) {
+                            movieData.trailer_url = `https://www.youtube.com/embed/${trailer.key}`;
+                        }
                         setDatosPelicula(movieData);
                     })
                     .catch(err => console.error(err));
