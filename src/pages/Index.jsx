@@ -6,7 +6,8 @@ function Index() {
         <>
             <HeaderIndex/>
             <Divider/>
-            <Link color="primary" href="/home"><Button>Home</Button></Link>
+            <Button color="primary" variant="flat" as={Link} href="/home"
+                    className="flex justify-center content-center">Home</Button>
         </>
     );
 }

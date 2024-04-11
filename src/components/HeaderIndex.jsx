@@ -21,7 +21,7 @@ export default function HeaderIndex() {
                     </Button>
                 </NavbarItem>
                 <NavbarItem>
-                    <Button as={Link} color="primary" href="#" variant="flat">
+                    <Button as={Link} color="primary" href="/register" variant="flat">
                         Registrarse
                     </Button>
                 </NavbarItem>
