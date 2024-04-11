@@ -1,11 +1,12 @@
 import HeaderIndex from "../components/HeaderIndex.jsx";
-import {Divider} from "@nextui-org/react";
+import {Button, Divider, Link} from "@nextui-org/react";
 
 function Index() {
     return (
         <>
             <HeaderIndex/>
             <Divider/>
+            <Link color="primary" href="/home"><Button>Home</Button></Link>
         </>
     );
 }
