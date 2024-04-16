@@ -7,8 +7,13 @@ import {
     Button,
 } from "@nextui-org/react";
 import Logo from "./Logo";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function HeaderIndex() {
+    const {loginWithRedirect} = useAuth0();
+    const handleSubmit = () => {
+        loginWithRedirect().then(r => console.log(r)).catch(e => console.error(e));
+    };
     return (
         <Navbar className="mt-2">
             <NavbarBrand>
@@ -16,7 +21,7 @@ export default function HeaderIndex() {
             </NavbarBrand>
             <NavbarContent justify="end">
                 <NavbarItem>
-                    <Button as={Link} color="default" href="/login" variant="flat">
+                    <Button color="default" variant="flat" onPress={handleSubmit}>
                         Iniciar sesión
                     </Button>
                 </NavbarItem>

@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.4",
     "@nextui-org/react": "^2.2.10",
+    "axios": "^1.6.8",
     "framer-motion": "^11.0.24",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",

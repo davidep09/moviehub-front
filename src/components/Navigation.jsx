@@ -10,18 +10,7 @@ import {
 
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-    const menuItems = [
-        "Profile",
-        "Dashboard",
-        "Activity",
-        "Analytics",
-        "System",
-        "Deployments",
-        "My Settings",
-        "Team Settings",
-        "Help & Feedback",
-        "Log Out",
-    ];
+
     return (
         <Navbar className="mt-2" shouldHideOnScroll>
 

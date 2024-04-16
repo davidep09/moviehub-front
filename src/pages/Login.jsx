@@ -1,9 +1,10 @@
 import {Input, Button, Spacer, Link} from '@nextui-org/react';
+import {useAuth0} from '@auth0/auth0-react';
 
 const Login = () => {
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Lógica de inicio de sesión
+    const {loginWithRedirect} = useAuth0();
+    const handleSubmit = () => {
+        loginWithRedirect().then(r => console.log(r)).catch(e => console.error(e));
     };
 
     return (
