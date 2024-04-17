@@ -12,8 +12,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Auth0Provider
             domain={config.domain}
             clientId={config.clientId}
+            audience={config.audience}
             authorizationParams={{
-                redirect_uri: "http://localhost:5173/home",
+                redirect_uri: window.location.origin + "/home",
             }}
         >
             <BrowserRouter>

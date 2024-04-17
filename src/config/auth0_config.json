@@ -1,5 +1,6 @@
 {
   "domain": "dev-46eceomc6lg0vp4m.eu.auth0.com",
-  "clientId": "jHXEtV1BV15H04tSbEkW2Ru9mCgLvDI8",
+  "clientId": "gGpv0iVrQVLk0ylFnTOJ3rH47OrMUaaa",
+  "audience": "https://dev-46eceomc6lg0vp4m.eu.auth0.com/api/v2/",
   "redirectUri": "http://localhost:5173/home"
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -20,12 +20,17 @@ import {useAuth0} from "@auth0/auth0-react";
 
 export default function Navigation({usuario}) {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const {logout} = useAuth0();
     const logoutWithRedirect = () =>
         logout({
             logoutParams: {
                 returnTo: window.location.origin,
             }
         });
+
+    useEffect(() => {
+        console.log(usuario);
+    }, []);
     return (
         <Navbar className="mt-2" shouldHideOnScroll>
 
@@ -52,34 +57,6 @@ export default function Navigation({usuario}) {
                 </NavbarItem>
             </NavbarContent>
 
-            <NavbarContent justify="end">
-                <NavbarItem>
-                    <Dropdown placement="bottom-end">
-                        <DropdownTrigger>
-                            <User
-                                name="Ana"
-                                description="Product Designer"
-                                avatarProps={{
-                                    src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
-                                }}
-                            />
-                        </DropdownTrigger>
-                        <DropdownMenu aria-label="Acciones" variant="flat">
-                            <DropdownItem key="profile" className="h-14 gap-2">
-                                <p className="font-semibold">Sesión iniciada como:</p>
-                                <p className="font-semibold">zoey@example.com</p>
-                            </DropdownItem>
-                            <DropdownItem key="listas">Mis listas</DropdownItem>
-                            <DropdownItem key="ajustes">Ajustes</DropdownItem>
-                            <DropdownItem key="logout" color="danger" as={Button}
-                                          onPress={logoutWithRedirect}>
-                                Cerrar sesión
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                </NavbarItem>
-            </NavbarContent>
-
             <NavbarMenu>
                 <NavbarMenuItem>
                     <Link href="/home" size="lg">Inicio</Link>
@@ -91,6 +68,34 @@ export default function Navigation({usuario}) {
                     <Link href="/trends" size="lg">Tendencias</Link>
                 </NavbarMenuItem>
             </NavbarMenu>
+
+            <NavbarContent justify="end">
+                <NavbarItem>
+                    <Dropdown placement="bottom-end">
+                        <DropdownTrigger>
+                            <User
+                                name={usuario.nickname}
+                                description="Usuario autenticado"
+                                avatarProps={{
+                                    src: usuario.picture,
+                                }}
+                            />
+                        </DropdownTrigger>
+                        <DropdownMenu aria-label="Acciones" variant="flat">
+                            <DropdownItem key="profile" className="h-14 gap-2">
+                                <p className="font-semibold">Sesión iniciada como:</p>
+                                <p className="font-semibold">{usuario.email}</p>
+                            </DropdownItem>
+                            <DropdownItem key="listas">Mis listas</DropdownItem>
+                            <DropdownItem key="ajustes">Ajustes</DropdownItem>
+                            <DropdownItem key="logout" color="danger" as={Button}
+                                          onPress={logoutWithRedirect}>
+                                Cerrar sesión
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </NavbarItem>
+            </NavbarContent>
         </Navbar>
     );
 }
