@@ -1,10 +1,19 @@
 import {Input, Button, Spacer, Link} from '@nextui-org/react';
 import {useAuth0} from '@auth0/auth0-react';
+import {redirect, useNavigate} from 'react-router-dom';
 
 const Login = () => {
     const {loginWithRedirect} = useAuth0();
-    const handleSubmit = () => {
-        loginWithRedirect().then(r => console.log(r)).catch(e => console.error(e));
+    const handleSubmitLogin = async (e) => {
+        e.preventDefault();
+        try {
+            await loginWithRedirect({
+                redirectUri: window.location.origin + '/home',
+                screen_hint: 'login',
+            });
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (
@@ -18,7 +27,7 @@ const Login = () => {
             <div className="mx-auto sm:h-full w-[70%] mt-8 sm:my-80">
                 <h2 className="text-2xl text-center">Iniciar sesión</h2>
                 <Spacer y={2}/>
-                <LoginForm onSubmit={handleSubmit}/>
+                <LoginForm onSubmit={handleSubmitLogin}/>
                 <Link href="/register" className="text-center block mt-4">Registrarse</Link>
             </div>
         </div>

@@ -5,11 +5,22 @@ import {
     NavbarContent,
     NavbarItem,
     Link,
-    User, Dropdown, DropdownMenu, DropdownItem, DropdownTrigger, Spacer, NavbarMenuToggle, NavbarMenu, NavbarMenuItem,
+    User,
+    Dropdown,
+    DropdownMenu,
+    DropdownItem,
+    DropdownTrigger,
+    Spacer,
+    NavbarMenuToggle,
+    NavbarMenu,
+    NavbarMenuItem,
+    Button,
 } from "@nextui-org/react";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const {logout, user, isAuthenticated, isLoading} = useAuth0();
 
     return (
         <Navbar className="mt-2" shouldHideOnScroll>
@@ -42,7 +53,7 @@ export default function Navigation() {
                     <Dropdown placement="bottom-end">
                         <DropdownTrigger>
                             <User
-                                name="Jane Doe"
+                                name="Ana"
                                 description="Product Designer"
                                 avatarProps={{
                                     src: "https://i.pravatar.cc/150?u=a04258114e29026702d"
@@ -56,7 +67,8 @@ export default function Navigation() {
                             </DropdownItem>
                             <DropdownItem key="listas">Mis listas</DropdownItem>
                             <DropdownItem key="ajustes">Ajustes</DropdownItem>
-                            <DropdownItem key="logout" color="danger">
+                            <DropdownItem key="logout" color="danger" as={Button}
+                                          onPress={() => logout({logoutParams: {returnTo: window.location.origin}})}>
                                 Cerrar sesión
                             </DropdownItem>
                         </DropdownMenu>

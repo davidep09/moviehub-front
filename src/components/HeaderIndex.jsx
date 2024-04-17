@@ -8,6 +8,7 @@ import {
 } from "@nextui-org/react";
 import Logo from "./Logo";
 import {useAuth0} from "@auth0/auth0-react";
+import React from "react";
 
 export default function HeaderIndex() {
     const {loginWithRedirect} = useAuth0();
@@ -17,7 +18,7 @@ export default function HeaderIndex() {
     return (
         <Navbar className="mt-2">
             <NavbarBrand>
-                <h1 className="text-xl">Movie<span className="text-primary">Hub</span></h1>
+                <h1 className="font-logo text-4xl">Movie<span className="text-primary">Hub</span></h1>
             </NavbarBrand>
             <NavbarContent justify="end">
                 <NavbarItem>
