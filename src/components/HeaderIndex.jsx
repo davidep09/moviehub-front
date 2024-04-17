@@ -17,13 +17,8 @@ export default function HeaderIndex() {
             </NavbarBrand>
             <NavbarContent justify="end">
                 <NavbarItem>
-                    <Button color="default" variant="flat" onPress={() => loginWithRedirect()}>
-                        Iniciar sesión
-                    </Button>
-                </NavbarItem>
-                <NavbarItem>
-                    <Button as={Link} color="primary" href="/register" variant="flat">
-                        Registrarse
+                    <Button color="primary" variant="flat" onPress={() => loginWithRedirect()}>
+                        Acceder
                     </Button>
                 </NavbarItem>
             </NavbarContent>

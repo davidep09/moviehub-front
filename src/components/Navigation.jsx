@@ -18,10 +18,14 @@ import {
 } from "@nextui-org/react";
 import {useAuth0} from "@auth0/auth0-react";
 
-export default function Navigation() {
+export default function Navigation({usuario}) {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-    const {logout, user, isAuthenticated, isLoading} = useAuth0();
-
+    const logoutWithRedirect = () =>
+        logout({
+            logoutParams: {
+                returnTo: window.location.origin,
+            }
+        });
     return (
         <Navbar className="mt-2" shouldHideOnScroll>
 
@@ -68,7 +72,7 @@ export default function Navigation() {
                             <DropdownItem key="listas">Mis listas</DropdownItem>
                             <DropdownItem key="ajustes">Ajustes</DropdownItem>
                             <DropdownItem key="logout" color="danger" as={Button}
-                                          onPress={() => logout({logoutParams: {returnTo: window.location.origin}})}>
+                                          onPress={logoutWithRedirect}>
                                 Cerrar sesión
                             </DropdownItem>
                         </DropdownMenu>
