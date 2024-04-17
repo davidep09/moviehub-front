@@ -12,7 +12,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Auth0Provider
             domain={config.domain}
             clientId={config.clientId}
-            redirectUri={window.location.origin}
+            authorizationParams={{
+                redirect_uri: window.location.origin + "/home",
+            }}
         >
             <BrowserRouter>
                 <App/>
