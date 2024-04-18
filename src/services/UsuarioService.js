@@ -12,6 +12,10 @@ class UsuarioService {
     getUsuario(id) {
         return axios.get(USUARIOS_API_URL + '/' + id);
     }
+
+    createUsuario(usuario) {
+        return axios.post(USUARIOS_API_URL, usuario);
+    }
 }
 
 export default new UsuarioService();
