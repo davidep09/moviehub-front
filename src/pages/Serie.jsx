@@ -1,15 +1,18 @@
 import {useEffect} from "react";
-import {useParams} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
 import {useState} from "react";
 import {Divider} from "@nextui-org/react";
 import Navigation from "../components/Navigation.jsx";
 import SerieHeader from "../components/SerieHeader.jsx";
 import SerieSeasons from "../components/SerieSeasons.jsx";
 import Footer from "../components/Footer.jsx";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function Serie() {
     const {id} = useParams();
     const [datosSerie, setDatosSerie] = useState([]);
+    const {isAuthenticated} = useAuth0();
+
     useEffect(() => {
         const options = {
             method: 'GET',
@@ -62,6 +65,11 @@ export default function Serie() {
 
         console.log(datosSerie);
     }, []);
+
+    if (!isAuthenticated) {
+        return <Navigate to={"/"}/>;
+    }
+    
     return (
         <>
             <Navigation/>

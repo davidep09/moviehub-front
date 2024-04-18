@@ -3,9 +3,11 @@ import Navigation from "../components/Navigation.jsx";
 import {Divider} from "@nextui-org/react";
 import MovieHeader from "../components/MovieHeader.jsx";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function Movie() {
+    const {isAuthenticated} = useAuth0();
     const {id} = useParams();
     const [datosPelicula, setDatosPelicula] = useState([]);
     useEffect(() => {
@@ -65,6 +67,11 @@ export default function Movie() {
             })
             .catch(err => console.error(err));
     }, []);
+
+    if (!isAuthenticated) {
+        return <Navigate to={"/"}/>;
+    }
+
     return (
         <>
             <Navigation/>

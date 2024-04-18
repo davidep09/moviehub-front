@@ -75,7 +75,7 @@ export default function Navigation({usuario}) {
                         <DropdownTrigger>
                             <User
                                 name={usuario.nickname}
-                                description="Usuario autenticado"
+                                description="Conectado"
                                 avatarProps={{
                                     src: usuario.picture,
                                 }}
