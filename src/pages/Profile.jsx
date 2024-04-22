@@ -1,16 +1,12 @@
-import {useEffect, useState} from 'react';
-import {useAuth0} from '@auth0/auth0-react';
-import Navigation from "../components/Navigation.jsx";
-import {Divider, Spinner} from "@nextui-org/react";
-import Footer from "../components/Footer.jsx";
+import {useAuth0} from "@auth0/auth0-react";
 import {Navigate} from "react-router-dom";
+import Navigation from "../components/Navigation.jsx";
+import FormProfile from "../components/FormProfile.jsx";
+import {Divider} from "@nextui-org/react";
+import Footer from "../components/Footer.jsx";
 
-export default function Home() {
+function Profile() {
     const {user, isAuthenticated, isLoading} = useAuth0();
-
-    if (isLoading) {
-        return <Spinner size="large" label="Cargando.." className="m-auto"/>;
-    }
 
     if (!isAuthenticated && !isLoading) {
         return <Navigate to="/"/>;
@@ -20,7 +16,10 @@ export default function Home() {
         <>
             <Navigation/>
             <Divider/>
+            <FormProfile usuario={user}/>
             <Footer/>
         </>
     );
 }
+
+export default Profile;

@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Trends from './pages/Trends';
 import Movie from "./pages/Movie.jsx";
 import Serie from "./pages/Serie.jsx";
+import Profile from "./pages/Profile.jsx";
 
 function App() {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Index/>}/>
                 <Route path="/home" element={<Home/>}/>
+                <Route path="/profile" element={<Profile/>}/>
                 <Route path="/trends" element={<Trends/>}/>
                 <Route path="/movie/:id" element={<Movie/>}/>
                 <Route path="/serie/:id" element={<Serie/>}/>
