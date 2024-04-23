@@ -18,7 +18,7 @@ export default function Serie() {
             method: 'GET',
             headers: {
                 accept: 'application/json',
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMTRiMDIzMmQ1NzYwNGRkZWQxZmUwY2Q0MGQwZGFmOCIsInN1YiI6IjY1Y2Y0MWU0NjBjNzUxMDE3YjY5N2M3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fBcHfnQGD2dG6DLXG7TE2diADE_-CN1IZSllpNOb8qg'
+                Authorization: 'Bearer ' + import.meta.env.VITE_TMDB_HEADER
             }
         };
 
@@ -28,7 +28,7 @@ export default function Serie() {
                 const serieData = {
                     name: response.name,
                     originalName: response.original_name,
-                    year: response.first_air_date.split('-')[0],
+                    year: response.first_air_date ? response.first_air_date.split('-')[0] : 'N/A',
                     tagline: response.tagline ? response.tagline : '',
                     backdrop_path: `https://image.tmdb.org/t/p/original${response.backdrop_path}`,
                     poster_path: `https://image.tmdb.org/t/p/w500${response.poster_path}`,
@@ -69,7 +69,7 @@ export default function Serie() {
     if (!isAuthenticated) {
         return <Navigate to={"/"}/>;
     }
-    
+
     return (
         <>
             <Navigation/>

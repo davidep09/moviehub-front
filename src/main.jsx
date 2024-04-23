@@ -9,9 +9,9 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
         <Auth0Provider
-            domain="dev-46eceomc6lg0vp4m.eu.auth0.com"
-            clientId="gGpv0iVrQVLk0ylFnTOJ3rH47OrMUaaa"
-            audience="https://dev-46eceomc6lg0vp4m.eu.auth0.com/api/v2/"
+            domain={import.meta.env.VITE_AUTH0_DOMAIN}
+            clientId={import.meta.env.VITE_AUTH0_CLIENT_ID}
+            audience={import.meta.env.VITE_AUTH0_AUDIENCE}
             authorizationParams={{
                 redirect_uri: window.location.origin + "/home"
             }}

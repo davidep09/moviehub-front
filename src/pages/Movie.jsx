@@ -15,7 +15,7 @@ export default function Movie() {
             method: 'GET',
             headers: {
                 accept: 'application/json',
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMTRiMDIzMmQ1NzYwNGRkZWQxZmUwY2Q0MGQwZGFmOCIsInN1YiI6IjY1Y2Y0MWU0NjBjNzUxMDE3YjY5N2M3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fBcHfnQGD2dG6DLXG7TE2diADE_-CN1IZSllpNOb8qg'
+                Authorization: 'Bearer ' + import.meta.env.VITE_TMDB_API_KEY
             }
         };
 
@@ -38,16 +38,20 @@ export default function Movie() {
                 fetch(`https://api.themoviedb.org/3/movie/${id}/credits?language=es-ES`, options)
                     .then(response => response.json())
                     .then(response => {
-                        movieData.cast = response.cast.slice(0, 10).map(actor => ({
-                            name: actor.name,
-                            profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "",
-                            roles: actor.character
-                        }));
-                        movieData.crew = response.crew.slice(0, 10).map(crew => ({
-                            name: crew.name,
-                            profile_path: crew.profile_path ? `https://image.tmdb.org/t/p/w500${crew.profile_path}` : "",
-                            roles: crew.job
-                        }));
+                        if (response.cast) {
+                            movieData.cast = response.cast.slice(0, 10).map(actor => ({
+                                name: actor.name,
+                                profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "",
+                                roles: actor.character
+                            }));
+                        }
+                        if (response.crew) {
+                            movieData.crew = response.crew.slice(0, 10).map(crew => ({
+                                name: crew.name,
+                                profile_path: crew.profile_path ? `https://image.tmdb.org/t/p/w500${crew.profile_path}` : "",
+                                roles: crew.job
+                            }));
+                        }
 
                         setDatosPelicula(movieData);
                     })
@@ -57,9 +61,11 @@ export default function Movie() {
                 fetch(`https://api.themoviedb.org/3/movie/${id}/videos?language=es-ES`, options)
                     .then(response => response.json())
                     .then(response => {
-                        const trailer = response.results.find(video => video.type === 'Trailer');
-                        if (trailer) {
-                            movieData.trailer_url = `https://www.youtube.com/embed/${trailer.key}`;
+                        if (response.results) {
+                            const trailer = response.results.find(video => video.type === 'Trailer');
+                            if (trailer) {
+                                movieData.trailer_url = `https://www.youtube.com/embed/${trailer.key}`;
+                            }
                         }
                         setDatosPelicula(movieData);
                     })

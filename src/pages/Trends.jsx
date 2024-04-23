@@ -25,12 +25,13 @@ export default function Trends() {
             .then(response => response.json())
             .then(response => {
                 const moviesData = response.results.map(movie => ({
-                    key: movie.id,
                     id: movie.id,
-                    fecha: movie.release_date ? movie.release_date : movie.first_air_date,
-                    rating: movie.vote_average ? movie.vote_average : 0,
-                    title: movie.title ? movie.title : movie.name,
-                    url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+                    poster_path: movie.poster_path,
+                    title: movie.title,
+                    name: movie.name,
+                    vote_average: movie.vote_average,
+                    release_date: movie.release_date,
+                    first_air_date: movie.first_air_date,
                     media_type: movie.media_type
                 }));
                 setMovies(moviesData);
