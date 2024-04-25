@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {
     Navbar,
     NavbarBrand,
@@ -18,9 +18,9 @@ import {
 } from "@nextui-org/react";
 import {useAuth0} from "@auth0/auth0-react";
 
-export default function Navigation({usuario}) {
+export default function Navigation() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-    const {logout} = useAuth0();
+    const {logout, user} = useAuth0();
     const logoutWithRedirect = () =>
         logout({
             logoutParams: {
@@ -28,9 +28,6 @@ export default function Navigation({usuario}) {
             }
         });
 
-    useEffect(() => {
-        console.log(usuario);
-    }, []);
     return (
         <Navbar className="mt-2" shouldHideOnScroll>
 
@@ -74,17 +71,17 @@ export default function Navigation({usuario}) {
                     <Dropdown placement="bottom-end">
                         <DropdownTrigger>
                             <User
-                                name={usuario.nickname}
+                                name={user.name !== user.email ? user.name : user.nickname}
                                 description="Conectado"
                                 avatarProps={{
-                                    src: usuario.picture,
+                                    src: user.picture,
                                 }}
                             />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Acciones" variant="flat">
-                            <DropdownItem key="profile" className="h-14 gap-2">
+                            <DropdownItem key="profile" className="h-14 gap-2" href="/profile">
                                 <p className="font-semibold">Sesión iniciada como:</p>
-                                <p className="font-semibold">{usuario.email}</p>
+                                <p className="font-semibold">{user.email}</p>
                             </DropdownItem>
                             <DropdownItem key="listas">Mis listas</DropdownItem>
                             <DropdownItem key="ajustes">Ajustes</DropdownItem>
