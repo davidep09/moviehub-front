@@ -1,5 +1,6 @@
 import {Card, CardBody, CardHeader, Image} from "@nextui-org/react";
 import {useNavigate} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 function CustomCard({movie}) {
     const navigate = useNavigate();
@@ -29,5 +30,18 @@ function CustomCard({movie}) {
         </Card>
     );
 }
+
+CustomCard.propTypes = {
+    movie: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        media_type: PropTypes.string.isRequired,
+        title: PropTypes.string,
+        name: PropTypes.string,
+        poster_path: PropTypes.string,
+        vote_average: PropTypes.number,
+        release_date: PropTypes.string,
+        first_air_date: PropTypes.string
+    }).isRequired
+};
 
 export default CustomCard;

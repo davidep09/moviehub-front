@@ -1,5 +1,3 @@
-import React from "react"; // Asegúrate de que la ruta al archivo del logo es correcta
-
 export default function Footer() {
     return (
         <footer className="bg-gray-800 text-white p-4">

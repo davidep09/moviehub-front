@@ -4,6 +4,7 @@ import {
     Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader,
     Textarea, useDisclosure
 } from "@nextui-org/react";
+import PropTypes from "prop-types";
 
 export default function MovieHeader({datosPelicula}) {
     const {onOpen: openTrailerModal, onClose: closeTrailerModal, isOpen: isTrailerModalOpen} = useDisclosure();
@@ -70,7 +71,7 @@ export default function MovieHeader({datosPelicula}) {
                 onClose={closeTrailerModal}
             >
                 <ModalContent>
-                    {(onClose) => (
+                    {() => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">Trailer</ModalHeader>
                             <ModalBody>
@@ -112,3 +113,27 @@ export default function MovieHeader({datosPelicula}) {
         </div>
     );
 }
+
+MovieHeader.propTypes = {
+    datosPelicula: PropTypes.shape({
+        title: PropTypes.string,
+        originalName: PropTypes.string,
+        release_date: PropTypes.string,
+        vote_average: PropTypes.number,
+        status: PropTypes.string,
+        backdrop_path: PropTypes.string,
+        poster_path: PropTypes.string,
+        tagline: PropTypes.string,
+        overview: PropTypes.string,
+        crew: PropTypes.arrayOf(PropTypes.shape({
+            name: PropTypes.string,
+            roles: PropTypes.string
+        })),
+        cast: PropTypes.arrayOf(PropTypes.shape({
+            name: PropTypes.string,
+            roles: PropTypes.string,
+            profile_path: PropTypes.string
+        })),
+        trailer_url: PropTypes.string
+    }).isRequired
+};

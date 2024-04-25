@@ -12,7 +12,6 @@ function Profile() {
     const [userProfile, setUserProfile] = useState();
     const [loading, setLoading] = useState(true);
 
-    // Recuperar datos del usuario
     useEffect(() => {
         if (user) {
             setId(user.sub);
@@ -43,13 +42,11 @@ function Profile() {
             .catch(error => console.log('error', error));
     }, [id]);
 
-    // -----------------------------------------
-
     if (!isAuthenticated) {
         return <Navigate to="/"/>;
     }
 
-    if (loading) { // Si la carga está en verdadero, renderizar un componente de carga
+    if (loading) {
         return <Spinner size="large" label="Cargando.." className="m-auto"/>;
     }
 

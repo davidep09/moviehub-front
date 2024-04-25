@@ -9,6 +9,7 @@ import {
     ModalBody,
     useDisclosure, ModalFooter
 } from "@nextui-org/react";
+import PropTypes from "prop-types";
 
 export default function SerieHeader({datosSerie}) {
     const normalizedRating = Math.round(datosSerie.vote_average / 2);
@@ -85,3 +86,23 @@ export default function SerieHeader({datosSerie}) {
         </div>
     );
 }
+
+SerieHeader.propTypes = {
+    datosSerie: PropTypes.shape({
+        backdrop_path: PropTypes.string,
+        poster_path: PropTypes.string,
+        name: PropTypes.string,
+        originalName: PropTypes.string,
+        year: PropTypes.string,
+        status: PropTypes.string,
+        first_air_date: PropTypes.string,
+        vote_average: PropTypes.number,
+        tagline: PropTypes.string,
+        overview: PropTypes.string,
+        cast: PropTypes.arrayOf(PropTypes.shape({
+            profile_path: PropTypes.string,
+            name: PropTypes.string,
+            roles: PropTypes.string
+        }))
+    }).isRequired
+};

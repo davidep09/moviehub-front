@@ -14,8 +14,8 @@ import {
 } from "@nextui-org/react";
 import {useState} from 'react';
 import {useParams} from "react-router-dom";
+import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
 export default function SerieSeasons({seasons}) {
     const {id} = useParams();
     const {isOpen, onOpen, onClose} = useDisclosure();
@@ -27,7 +27,7 @@ export default function SerieSeasons({seasons}) {
             method: 'GET',
             headers: {
                 accept: 'application/json',
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyMTRiMDIzMmQ1NzYwNGRkZWQxZmUwY2Q0MGQwZGFmOCIsInN1YiI6IjY1Y2Y0MWU0NjBjNzUxMDE3YjY5N2M3ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.fBcHfnQGD2dG6DLXG7TE2diADE_-CN1IZSllpNOb8qg'
+                Authorization: `Bearer ${import.meta.env.VITE_TMDB_HEADER}`
             }
         };
 
@@ -108,3 +108,14 @@ export default function SerieSeasons({seasons}) {
         </div>
     );
 }
+
+SerieSeasons.propTypes = {
+    seasons: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        poster_path: PropTypes.string,
+        episode_count: PropTypes.number,
+        air_date: PropTypes.string,
+        overview: PropTypes.string
+    })).isRequired
+};

@@ -62,9 +62,7 @@ export default function Serie() {
                     .catch(err => console.error(err));
             })
             .catch(err => console.error(err));
-
-        console.log(datosSerie);
-    }, []);
+    }, [id]);
 
     if (!isAuthenticated) {
         return <Navigate to={"/"}/>;

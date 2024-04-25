@@ -1,6 +1,6 @@
 import CustomCard from "./CustomCard.jsx";
+import PropTypes from "prop-types";
 
-// eslint-disable-next-line react/prop-types
 function TrendsCarousel({trends}) {
     if (!Array.isArray(trends)) {
         return <p>Las tendencias no están disponibles</p>;
@@ -19,6 +19,10 @@ function TrendsCarousel({trends}) {
             </div>
         </>
     )
+}
+
+TrendsCarousel.propTypes = {
+    trends: PropTypes.array.isRequired
 }
 
 export default TrendsCarousel;

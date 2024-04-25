@@ -1,14 +1,21 @@
 import {useAuth0} from '@auth0/auth0-react';
 import Navigation from "../components/Navigation.jsx";
-import {Divider, Spinner} from "@nextui-org/react";
+import {Button, Divider, Input, Spinner} from "@nextui-org/react";
 import Footer from "../components/Footer.jsx";
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import TrendsCarousel from "../components/TrendsCarousel.jsx";
 import {useEffect, useState} from "react";
+import SearchIcon from "../components/icons/SearchIcon.jsx";
 
 export default function Home() {
     const {isAuthenticated, isLoading} = useAuth0();
     const [trends, setTrends] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(`/search/${searchTerm}`);
+    };
 
     useEffect(() => {
         const requestOptions = {
@@ -57,6 +64,18 @@ export default function Home() {
         <>
             <Navigation/>
             <div className="bg-primary-50">
+                <Divider/>
+                <h1 className="text-center text-2xl my-6">Buscar</h1>
+                <div className="flex w-1/2 m-auto my-6">
+                    <Input type="search" placeholder="Buscar película o serie"
+                           className="flex-grow"
+                           value={searchTerm}
+                           onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                    <Button onClick={handleClick} className="ml-2" disabled={!searchTerm} isIconOnly>
+                        <SearchIcon/>
+                    </Button>
+                </div>
                 <Divider/>
                 <TrendsCarousel trends={trends}/>
             </div>

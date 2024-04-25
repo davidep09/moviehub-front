@@ -1,5 +1,6 @@
 import {Pagination, Spacer} from "@nextui-org/react";
 import CustomCard from "./CustomCard.jsx";
+import PropTypes from "prop-types";
 
 export default function MoviesCarousel({movies, page, totalPages, onPageChange}) {
     return (
@@ -18,3 +19,10 @@ export default function MoviesCarousel({movies, page, totalPages, onPageChange})
         </>
     );
 }
+
+MoviesCarousel.propTypes = {
+    movies: PropTypes.array.isRequired,
+    page: PropTypes.number.isRequired,
+    totalPages: PropTypes.number.isRequired,
+    onPageChange: PropTypes.func.isRequired
+};

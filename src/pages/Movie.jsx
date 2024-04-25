@@ -10,12 +10,13 @@ export default function Movie() {
     const {isAuthenticated} = useAuth0();
     const {id} = useParams();
     const [datosPelicula, setDatosPelicula] = useState([]);
+
     useEffect(() => {
         const options = {
             method: 'GET',
             headers: {
                 accept: 'application/json',
-                Authorization: 'Bearer ' + import.meta.env.VITE_TMDB_API_KEY
+                Authorization: 'Bearer ' + import.meta.env.VITE_TMDB_HEADER
             }
         };
 
@@ -72,7 +73,7 @@ export default function Movie() {
                     .catch(err => console.error(err));
             })
             .catch(err => console.error(err));
-    }, []);
+    }, [id]);
 
     if (!isAuthenticated) {
         return <Navigate to={"/"}/>;
