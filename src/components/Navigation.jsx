@@ -46,7 +46,7 @@ export default function Navigation() {
                 </NavbarItem>
                 <Spacer x={1}/>
                 <NavbarItem>
-                    <Link href="#" size="lg">Novedades</Link>
+                    <Link href="/finder" size="lg">Explorar</Link>
                 </NavbarItem>
                 <Spacer x={1}/>
                 <NavbarItem>

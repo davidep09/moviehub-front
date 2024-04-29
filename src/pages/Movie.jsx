@@ -83,6 +83,7 @@ export default function Movie() {
         <>
             <Navigation/>
             <MovieHeader datosPelicula={datosPelicula}/>
+
             <Divider/>
             <Footer/>
         </>
