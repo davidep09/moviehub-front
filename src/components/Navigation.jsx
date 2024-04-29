@@ -19,7 +19,7 @@ import {
 import {useAuth0} from "@auth0/auth0-react";
 
 export default function Navigation() {
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [isMenuOpen] = React.useState(false);
     const {logout, user} = useAuth0();
     const logoutWithRedirect = () =>
         logout({
@@ -46,7 +46,7 @@ export default function Navigation() {
                 </NavbarItem>
                 <Spacer x={1}/>
                 <NavbarItem>
-                    <Link href="#" size="lg">Novedades</Link>
+                    <Link href="/finder" size="lg">Explorar</Link>
                 </NavbarItem>
                 <Spacer x={1}/>
                 <NavbarItem>
@@ -59,7 +59,7 @@ export default function Navigation() {
                     <Link href="/home" size="lg">Inicio</Link>
                 </NavbarMenuItem>
                 <NavbarMenuItem>
-                    <Link href="#" size="lg">Novedades</Link>
+                    <Link href="/finder" size="lg">Explorar</Link>
                 </NavbarMenuItem>
                 <NavbarMenuItem>
                     <Link href="/trends" size="lg">Tendencias</Link>

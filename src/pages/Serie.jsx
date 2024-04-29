@@ -7,6 +7,7 @@ import SerieHeader from "../components/SerieHeader.jsx";
 import SerieSeasons from "../components/SerieSeasons.jsx";
 import Footer from "../components/Footer.jsx";
 import {useAuth0} from "@auth0/auth0-react";
+import SerieProvider from "../components/SerieProvider.jsx";
 
 export default function Serie() {
     const {id} = useParams();
@@ -74,6 +75,7 @@ export default function Serie() {
             <Divider/>
             <SerieHeader datosSerie={datosSerie}/>
             <SerieSeasons seasons={datosSerie.seasons}/>
+            <SerieProvider datosSerie={datosSerie}/>
             <Footer/>
         </>
     );
