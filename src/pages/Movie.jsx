@@ -2,6 +2,7 @@ import Footer from "../components/Footer.jsx";
 import Navigation from "../components/Navigation.jsx";
 import {Divider} from "@nextui-org/react";
 import MovieHeader from "../components/MovieHeader.jsx";
+import MovieProvider from "../components/MovieProvider.jsx";
 import {useEffect, useState} from "react";
 import {Navigate, useParams} from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
@@ -71,6 +72,23 @@ export default function Movie() {
                         setDatosPelicula(movieData);
                     })
                     .catch(err => console.error(err));
+
+                // Fetch streaming platforms data
+                fetch(`https://api.themoviedb.org/3/movie/${id}/watch/providers?language=es-ES`, options)
+                    .then(response => response.json())
+                    .then(response => {
+                        if (response.results) {
+                            const esProviders = response.results.ES;
+                            if (esProviders) {
+                                movieData.streamingPlatforms = esProviders.flatrate.map(provider => ({
+                                    name: provider.provider_name,
+                                    logo: `https://image.tmdb.org/t/p/original${provider.logo_path}`
+                                }));
+                            }
+                        }
+                        setDatosPelicula(movieData);
+                    })
+                    .catch(err => console.error(err));
             })
             .catch(err => console.error(err));
     }, [id]);
@@ -83,7 +101,7 @@ export default function Movie() {
         <>
             <Navigation/>
             <MovieHeader datosPelicula={datosPelicula}/>
-
+            <MovieProvider datosPelicula={datosPelicula}/>
             <Divider/>
             <Footer/>
         </>
