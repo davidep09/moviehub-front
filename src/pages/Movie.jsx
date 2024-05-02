@@ -21,74 +21,65 @@ export default function Movie() {
             }
         };
 
-        fetch(`https://api.themoviedb.org/3/movie/${id}?language=es-ES`, options)
-            .then(response => response.json())
-            .then(response => {
+        const fetchMovieData = fetch(`https://api.themoviedb.org/3/movie/${id}?language=es-ES`, options)
+            .then(response => response.json());
+
+        const fetchCastData = fetch(`https://api.themoviedb.org/3/movie/${id}/credits?language=es-ES`, options)
+            .then(response => response.json());
+
+        const fetchVideosData = fetch(`https://api.themoviedb.org/3/movie/${id}/videos?language=es-ES`, options)
+            .then(response => response.json());
+
+        const fetchProvidersData = fetch(`https://api.themoviedb.org/3/movie/${id}/watch/providers?language=es-ES`, options)
+            .then(response => response.json());
+
+        Promise.all([fetchMovieData, fetchCastData, fetchVideosData, fetchProvidersData])
+            .then(([movieDataResponse, castDataResponse, videosDataResponse, providersDataResponse]) => {
                 const movieData = {
-                    title: response.title,
-                    originalName: response.original_title,
-                    tagline: response.tagline ? response.tagline : '',
-                    backdrop_path: `https://image.tmdb.org/t/p/original${response.backdrop_path}`,
-                    poster_path: `https://image.tmdb.org/t/p/w500${response.poster_path}`,
-                    release_date: response.release_date,
-                    vote_average: response.vote_average,
-                    overview: response.overview ? response.overview : 'No hay sinopsis disponible.',
-                    status: response.status,
+                    title: movieDataResponse.title,
+                    originalName: movieDataResponse.original_title,
+                    tagline: movieDataResponse.tagline ? movieDataResponse.tagline : '',
+                    backdrop_path: `https://image.tmdb.org/t/p/original${movieDataResponse.backdrop_path}`,
+                    poster_path: `https://image.tmdb.org/t/p/w500${movieDataResponse.poster_path}`,
+                    release_date: movieDataResponse.release_date,
+                    vote_average: movieDataResponse.vote_average,
+                    overview: movieDataResponse.overview ? movieDataResponse.overview : 'No hay sinopsis disponible.',
+                    status: movieDataResponse.status,
                 };
 
-                // Fetch cast y crew data
-                fetch(`https://api.themoviedb.org/3/movie/${id}/credits?language=es-ES`, options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if (response.cast) {
-                            movieData.cast = response.cast.slice(0, 10).map(actor => ({
-                                name: actor.name,
-                                profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "",
-                                roles: actor.character
-                            }));
-                        }
-                        if (response.crew) {
-                            movieData.crew = response.crew.slice(0, 10).map(crew => ({
-                                name: crew.name,
-                                profile_path: crew.profile_path ? `https://image.tmdb.org/t/p/w500${crew.profile_path}` : "",
-                                roles: crew.job
-                            }));
-                        }
+                if (castDataResponse.cast) {
+                    movieData.cast = castDataResponse.cast.slice(0, 10).map(actor => ({
+                        name: actor.name,
+                        profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "",
+                        roles: actor.character
+                    }));
+                }
+                if (castDataResponse.crew) {
+                    movieData.crew = castDataResponse.crew.slice(0, 10).map(crew => ({
+                        name: crew.name,
+                        profile_path: crew.profile_path ? `https://image.tmdb.org/t/p/w500${crew.profile_path}` : "",
+                        roles: crew.job
+                    }));
+                }
 
-                        setDatosPelicula(movieData);
-                    })
-                    .catch(err => console.error(err));
+                if (videosDataResponse.results) {
+                    const trailer = videosDataResponse.results.find(video => video.type === 'Trailer');
+                    if (trailer) {
+                        movieData.trailer_url = `https://www.youtube.com/embed/${trailer.key}`;
+                    }
+                }
 
-                // Fetch videos data
-                fetch(`https://api.themoviedb.org/3/movie/${id}/videos?language=es-ES`, options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if (response.results) {
-                            const trailer = response.results.find(video => video.type === 'Trailer');
-                            if (trailer) {
-                                movieData.trailer_url = `https://www.youtube.com/embed/${trailer.key}`;
-                            }
-                        }
-                        setDatosPelicula(movieData);
-                    })
-                    .catch(err => console.error(err));
+                if (providersDataResponse.results) {
+                    const esProviders = providersDataResponse.results.ES;
+                    if (esProviders) {
+                        movieData.streamingPlatforms = esProviders.flatrate.map(provider => ({
+                            name: provider.provider_name,
+                            logo: `https://image.tmdb.org/t/p/original${provider.logo_path}`
+                        }));
+                    }
+                }
 
-                // Fetch streaming platforms data
-                fetch(`https://api.themoviedb.org/3/movie/${id}/watch/providers?language=es-ES`, options)
-                    .then(response => response.json())
-                    .then(response => {
-                        if (response.results) {
-                            const esProviders = response.results.ES;
-                            if (esProviders) {
-                                movieData.streamingPlatforms = esProviders.flatrate.map(provider => ({
-                                    name: provider.provider_name,
-                                    logo: `https://image.tmdb.org/t/p/original${provider.logo_path}`
-                                }));
-                            }
-                        }
-                        setDatosPelicula(movieData);
-                    })
-                    .catch(err => console.error(err));
+                setDatosPelicula(movieData);
             })
             .catch(err => console.error(err));
     }, [id]);

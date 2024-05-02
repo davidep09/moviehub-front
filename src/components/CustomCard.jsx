@@ -24,8 +24,8 @@ function CustomCard({movie}) {
             </CardHeader>
             <CardBody className="pt-1">
                 <h4 className="pl-2 font-bold text-large overflow-hidden whitespace-nowrap">{movie.title || movie.name}</h4>
-                <small className="pl-2 text-default-500">{movie.vote_average}</small>
-                <p className="pl-2 text-tiny uppercase font-bold">{movie.release_date || movie.first_air_date}</p>
+                <small className="pl-2 text-default-500">{movie.vote_average.toFixed(1)}</small>
+                <p className="pl-2 text-tiny uppercase font-bold">{new Date(movie.release_date || movie.first_air_date).toLocaleDateString()}</p>
             </CardBody>
         </Card>
     );

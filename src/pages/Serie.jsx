@@ -1,6 +1,5 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Navigate, useParams} from "react-router-dom";
-import {useState} from "react";
 import {Divider} from "@nextui-org/react";
 import Navigation from "../components/Navigation.jsx";
 import SerieHeader from "../components/SerieHeader.jsx";
@@ -23,44 +22,46 @@ export default function Serie() {
             }
         };
 
-        fetch(`https://api.themoviedb.org/3/tv/${id}?language=es-ES`, options)
-            .then(response => response.json())
-            .then(response => {
+        const fetchSerieData = fetch(`https://api.themoviedb.org/3/tv/${id}?language=es-ES`, options)
+            .then(response => response.json());
+
+        const fetchCastData = fetch(`https://api.themoviedb.org/3/tv/${id}/aggregate_credits?language=es-ES`, options)
+            .then(response => response.json());
+
+        const fetchProvidersData = fetch(`https://api.themoviedb.org/3/tv/${id}/watch/providers?`, options)
+            .then(response => response.json());
+
+        Promise.all([fetchSerieData, fetchCastData, fetchProvidersData])
+            .then(([serieDataResponse, castDataResponse, providersDataResponse]) => {
                 const serieData = {
-                    name: response.name,
-                    originalName: response.original_name,
-                    year: response.first_air_date ? response.first_air_date.split('-')[0] : 'N/A',
-                    tagline: response.tagline ? response.tagline : '',
-                    backdrop_path: `https://image.tmdb.org/t/p/original${response.backdrop_path}`,
-                    poster_path: `https://image.tmdb.org/t/p/w500${response.poster_path}`,
-                    first_air_date: response.first_air_date,
-                    vote_average: response.vote_average,
-                    overview: response.overview ? response.overview : 'No hay sinopsis disponible.',
-                    status: response.status,
-                    seasons: response.seasons.map(season => ({
+                    name: serieDataResponse.name,
+                    originalName: serieDataResponse.original_name,
+                    year: serieDataResponse.first_air_date ? new Date(serieDataResponse.first_air_date).getFullYear() : 'N/A',
+                    tagline: serieDataResponse.tagline ? serieDataResponse.tagline : '',
+                    backdrop_path: `https://image.tmdb.org/t/p/original${serieDataResponse.backdrop_path}`,
+                    poster_path: `https://image.tmdb.org/t/p/w500${serieDataResponse.poster_path}`,
+                    first_air_date: serieDataResponse.first_air_date ? new Date(serieDataResponse.first_air_date).toLocaleDateString() : 'N/A',
+                    vote_average: serieDataResponse.vote_average,
+                    overview: serieDataResponse.overview ? serieDataResponse.overview : 'No hay sinopsis disponible.',
+                    status: serieDataResponse.status,
+                    seasons: serieDataResponse.seasons.map(season => ({
                         id: season.id,
                         name: season.name,
                         episode_count: season.episode_count,
-                        air_date: season.air_date,
+                        air_date: season.air_date ? new Date(season.air_date).toLocaleDateString() : 'N/A',
                         poster_path: `https://image.tmdb.org/t/p/w500${season.poster_path}`,
                         overview: season.overview
                     })),
-                    numSeasons: response.number_of_seasons
+                    numSeasons: serieDataResponse.number_of_seasons,
+                    cast: castDataResponse.cast.slice(0, 10).map(actor => ({
+                        name: actor.name,
+                        profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "",
+                        roles: actor.roles.map(role => role.character)
+                    })),
+                    streamingPlatforms: providersDataResponse.results.ES ? providersDataResponse.results.ES.flatrate : []
                 };
 
-                // Fetch cast data
-                fetch(`https://api.themoviedb.org/3/tv/${id}/aggregate_credits?language=es-ES`, options)
-                    .then(response => response.json())
-                    .then(response => {
-                        serieData.cast = response.cast.slice(0, 10).map(actor => ({
-                            name: actor.name,
-                            profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "",
-                            roles: actor.roles.map(role => role.character)
-                        }));
-
-                        setDatosSerie(serieData);
-                    })
-                    .catch(err => console.error(err));
+                setDatosSerie(serieData);
             })
             .catch(err => console.error(err));
     }, [id]);
