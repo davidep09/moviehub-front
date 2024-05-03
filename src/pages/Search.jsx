@@ -13,6 +13,7 @@ function Search() {
     const term = queryParams.get('term');
     const genre = queryParams.get('genre');
     const watchProviders = queryParams.get('watchProviders');
+    const sortBy = queryParams.get('sortBy');
     const [seriesResults, setSeriesResults] = useState([]);
     const [moviesResults, setMoviesResults] = useState([]);
     const [page, setPage] = useState(1);
@@ -43,6 +44,11 @@ function Search() {
             urlSeries += `&page=${page}&include_adult=false`;
             urlMovies += `&page=${page}&include_adult=false`;
 
+            if (sortBy) {
+                urlSeries += `&sort_by=${sortBy}`;
+                urlMovies += `&sort_by=${sortBy}`;
+            }
+
             if (genre) {
                 urlSeries += `&with_genres=${genre}`;
                 urlMovies += `&with_genres=${genre}`;
@@ -66,7 +72,7 @@ function Search() {
                 seriesData.total_pages > moviesData.total_pages ? setTotalPages(seriesData.total_pages) : setTotalPages(moviesData.total_pages);
             });
         }
-    }, [genre, location.search, page, term, watchProviders]);
+    }, [genre, location.search, page, term, watchProviders, sortBy]);
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
@@ -79,10 +85,12 @@ function Search() {
     return (
         <>
             <Navigation/>
-            <Divider/>
-            <h2 className="text-center text-2xl my-6">Búsqueda</h2>
-            <SearchCarousel movies={moviesResults} series={seriesResults} page={page} totalPages={totalPages}
-                            onPageChange={handlePageChange}/>
+            <div className="bg-primary-50">
+                <Divider/>
+                <h2 className="text-center text-2xl my-6">Búsqueda</h2>
+                <SearchCarousel movies={moviesResults} series={seriesResults} page={page} totalPages={totalPages}
+                                onPageChange={handlePageChange}/>
+            </div>
             <Footer/>
         </>
     );

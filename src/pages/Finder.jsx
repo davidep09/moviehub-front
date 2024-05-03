@@ -57,8 +57,21 @@ function Finder() {
         [selectedKeysWatchProviders]
     );
 
+    const sortBy = {
+        "popularity.desc": "Popularidad",
+        "vote_average.desc": "Valoración",
+        "primary_release_date.desc": "Fecha de estreno más reciente",
+        "primary_release_date.asc": "Fecha de estreno más antigua",
+        "title.desc": "Título"
+    }
+    const [selectedKeysSortBy, setSelectedKeysSortBy] = useState(new Set([]));
+    useMemo(
+        () => Array.from(selectedKeysSortBy).join(", ").replaceAll("_", " "),
+        [selectedKeysSortBy]
+    );
+
     const handleClickBuscarPorFiltros = () => {
-        navigate(`/search?genre=${Array.from(selectedKeysGenre).join(",")}&watchProviders=${Array.from(selectedKeysWatchProviders).join(",")}`);
+        navigate(`/search?sortBy=${Array.from(selectedKeysSortBy)}&genre=${Array.from(selectedKeysGenre).join(",")}&watchProviders=${Array.from(selectedKeysWatchProviders).join(",")}`);
     };
 
     const handleClickBuscarPorPalabra = () => {
@@ -83,57 +96,88 @@ function Finder() {
             </div>
             <Divider className="w-[70%] mx-auto"/>
             <h2 className="text-center text-2xl my-6">Buscar por filtros</h2>
-            <div className="flex w-1/2 m-auto my-6">
-                <Dropdown>
-                    <DropdownTrigger>
-                        <Button
-                            variant="bordered"
-                            className="capitalize"
+            <div className="flex w-1/2 m-auto my-6 justify-center">
+                <div className="mx-1">
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="bordered"
+                                className="capitalize"
+                            >
+                                Género
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selecciona uno o varios géneros"
+                            variant="flat"
+                            closeOnSelect={false}
+                            disallowEmptySelection
+                            selectionMode="multiple"
+                            selectedKeys={selectedKeysGenre}
+                            onSelectionChange={setSelectedKeysGenre}
                         >
-                            Género
-                        </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                        aria-label="Selecciona uno o varios géneros"
-                        variant="flat"
-                        closeOnSelect={false}
-                        disallowEmptySelection
-                        selectionMode="multiple"
-                        selectedKeys={selectedKeysGenre}
-                        onSelectionChange={setSelectedKeysGenre}
-                    >
-                        {Object.keys(genres).map((key) => (
-                            <DropdownItem key={key} eventKey={key}>
-                                {genres[key]}
-                            </DropdownItem>
-                        ))}
-                    </DropdownMenu>
-                </Dropdown>
-                <Dropdown>
-                    <DropdownTrigger>
-                        <Button
-                            variant="bordered"
-                            className="capitalize"
+                            {Object.keys(genres).map((key) => (
+                                <DropdownItem key={key} eventKey={key}>
+                                    {genres[key]}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+                <div className="mx-1">
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="bordered"
+                                className="capitalize"
+                            >
+                                Plataforma
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selecciona una o varias plataformas"
+                            variant="flat"
+                            closeOnSelect={false}
+                            disallowEmptySelection
+                            selectionMode="multiple"
+                            selectedKeys={selectedKeysWatchProviders}
+                            onSelectionChange={setSelectedKeysWatchProviders}
                         >
-                            Plataforma
-                        </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                        aria-label="Selecciona una o varias plataformas"
-                        variant="flat"
-                        closeOnSelect={false}
-                        disallowEmptySelection
-                        selectionMode="multiple"
-                        selectedKeys={selectedKeysWatchProviders}
-                        onSelectionChange={setSelectedKeysWatchProviders}
-                    >
-                        {Object.keys(watchProviders).map((key) => (
-                            <DropdownItem key={key} eventKey={key}>
-                                {watchProviders[key]}
-                            </DropdownItem>
-                        ))}
-                    </DropdownMenu>
-                </Dropdown>
+                            {Object.keys(watchProviders).map((key) => (
+                                <DropdownItem key={key} eventKey={key}>
+                                    {watchProviders[key]}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+                <div className="mx-1">
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="bordered"
+                                className="capitalize"
+                            >
+                                Ordenar
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selecciona una o varias plataformas"
+                            variant="flat"
+                            closeOnSelect={false}
+                            disallowEmptySelection
+                            selectionMode="single"
+                            selectedKeys={selectedKeysSortBy}
+                            onSelectionChange={setSelectedKeysSortBy}
+                        >
+                            {Object.keys(sortBy).map((key) => (
+                                <DropdownItem key={key} eventKey={key}>
+                                    {sortBy[key]}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
                 <Button onClick={handleClickBuscarPorFiltros} className="ml-2" variant="flat" color="primary"
                         isIconOnly>
                     <SearchIcon/>
