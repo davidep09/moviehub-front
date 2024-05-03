@@ -11,6 +11,7 @@ export default function Movie() {
     const {isAuthenticated} = useAuth0();
     const {id} = useParams();
     const [datosPelicula, setDatosPelicula] = useState([]);
+    const defaultImage = "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg";
 
     useEffect(() => {
         const options = {
@@ -39,8 +40,8 @@ export default function Movie() {
                     title: movieDataResponse.title,
                     originalName: movieDataResponse.original_title,
                     tagline: movieDataResponse.tagline ? movieDataResponse.tagline : '',
-                    backdrop_path: `https://image.tmdb.org/t/p/original${movieDataResponse.backdrop_path}`,
-                    poster_path: `https://image.tmdb.org/t/p/w500${movieDataResponse.poster_path}`,
+                    backdrop_path: movieDataResponse.backdrop_path ? `https://image.tmdb.org/t/p/original${movieDataResponse.backdrop_path}` : defaultImage,
+                    poster_path: movieDataResponse.poster_path ? `https://image.tmdb.org/t/p/w500${movieDataResponse.poster_path}` : defaultImage,
                     release_date: movieDataResponse.release_date,
                     vote_average: movieDataResponse.vote_average,
                     overview: movieDataResponse.overview ? movieDataResponse.overview : 'No hay sinopsis disponible.',
@@ -50,14 +51,14 @@ export default function Movie() {
                 if (castDataResponse.cast) {
                     movieData.cast = castDataResponse.cast.slice(0, 10).map(actor => ({
                         name: actor.name,
-                        profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "",
+                        profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : defaultImage,
                         roles: actor.character
                     }));
                 }
                 if (castDataResponse.crew) {
                     movieData.crew = castDataResponse.crew.slice(0, 10).map(crew => ({
                         name: crew.name,
-                        profile_path: crew.profile_path ? `https://image.tmdb.org/t/p/w500${crew.profile_path}` : "",
+                        profile_path: crew.profile_path ? `https://image.tmdb.org/t/p/w500${crew.profile_path}` : defaultImage,
                         roles: crew.job
                     }));
                 }
@@ -71,10 +72,10 @@ export default function Movie() {
 
                 if (providersDataResponse.results) {
                     const esProviders = providersDataResponse.results.ES;
-                    if (esProviders) {
+                    if (esProviders && esProviders.flatrate) {
                         movieData.streamingPlatforms = esProviders.flatrate.map(provider => ({
                             name: provider.provider_name,
-                            logo: `https://image.tmdb.org/t/p/original${provider.logo_path}`
+                            logo: provider.logo_path
                         }));
                     }
                 }

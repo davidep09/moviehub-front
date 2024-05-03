@@ -67,7 +67,8 @@ export default function SerieHeader({datosSerie}) {
                                 <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-4 justify-center">
                                     {datosSerie.cast && datosSerie.cast.map((actor, index) => (
                                         <div key={index} className="flex flex-col items-center">
-                                            <Image src={actor.profile_path} className="max-w-14 sm:max-w-32"/>
+                                            <Image src={actor.profile_path}
+                                                   className="max-w-14 sm:max-w-32 w-full object-cover h-40"/>
                                             <p className="text-center font-bold">{actor.name}</p>
                                             <p className="text-center">{actor.roles}</p>
                                         </div>

@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 
 function CustomCard({movie}) {
     const navigate = useNavigate();
+    const defaultImage = "https://motivatevalmorgan.com/wp-content/uploads/2016/06/default-movie.jpg";
     const handlerClick = () => {
         if (movie.media_type === 'tv') {
             navigate(`/serie/${movie.id}`);
-        } else {
+        } else if (movie.media_type === 'movie') {
             navigate(`/movie/${movie.id}`);
         }
     };
@@ -17,14 +18,14 @@ function CustomCard({movie}) {
             <CardHeader className="pb-0 flex-col">
                 <Image
                     alt={movie.title || movie.name}
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                    src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : defaultImage}
                     radius="sm"
                     className="h-[400px] w-full object-cover"
                 />
             </CardHeader>
             <CardBody className="pt-1">
                 <h4 className="pl-2 font-bold text-large overflow-hidden whitespace-nowrap">{movie.title || movie.name}</h4>
-                <small className="pl-2 text-default-500">{movie.vote_average.toFixed(1)}</small>
+                {movie.vote_average && <small className="pl-2 text-default-500">{movie.vote_average.toFixed(1)}</small>}
                 <p className="pl-2 text-tiny uppercase font-bold">{new Date(movie.release_date || movie.first_air_date).toLocaleDateString()}</p>
             </CardBody>
         </Card>

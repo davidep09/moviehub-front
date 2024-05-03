@@ -1,36 +1,78 @@
 import {useEffect, useState} from 'react';
-import {Navigate, useParams} from 'react-router-dom';
-import MoviesCarousel from "../components/MoviesCarousel.jsx";
+import {Navigate, useLocation} from 'react-router-dom';
 import Navigation from "../components/Navigation.jsx";
 import {Divider} from "@nextui-org/react";
 import Footer from "../components/Footer.jsx";
 import {useAuth0} from "@auth0/auth0-react";
+import SearchCarousel from "../components/SearchCarousel.jsx";
 
 function Search() {
     const {isAuthenticated} = useAuth0();
-    const {term} = useParams();
-    const [searchResults, setSearchResults] = useState([]);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const term = queryParams.get('term');
+    const genre = queryParams.get('genre');
+    const watchProviders = queryParams.get('watchProviders');
+    const sortBy = queryParams.get('sortBy');
+    const [seriesResults, setSeriesResults] = useState([]);
+    const [moviesResults, setMoviesResults] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        if (term) {
-            const options = {
-                method: 'GET',
-                headers: {
-                    accept: 'application/json',
-                    Authorization: `Bearer ${import.meta.env.VITE_TMDB_HEADER}`
-                }
-            };
+        const options = {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${import.meta.env.VITE_TMDB_HEADER}`
+            }
+        };
 
+        if (term) {
             fetch(`https://api.themoviedb.org/3/search/multi?language=es-ES&query=${term}&page=${page}&include_adult=false`, options)
                 .then(res => res.json())
                 .then(data => {
-                    setSearchResults(data.results);
+                    setSeriesResults(data.results.filter(result => result.media_type === 'tv'));
+                    setMoviesResults(data.results.filter(result => result.media_type === 'movie'));
                     setTotalPages(data.total_pages);
                 });
+        } else {
+
+            let urlSeries = 'https://api.themoviedb.org/3/discover/tv?language=es-ES';
+            let urlMovies = 'https://api.themoviedb.org/3/discover/movie?language=es-ES';
+
+            urlSeries += `&page=${page}&include_adult=false`;
+            urlMovies += `&page=${page}&include_adult=false`;
+
+            if (sortBy) {
+                urlSeries += `&sort_by=${sortBy}`;
+                urlMovies += `&sort_by=${sortBy}`;
+            }
+
+            if (genre) {
+                urlSeries += `&with_genres=${genre}`;
+                urlMovies += `&with_genres=${genre}`;
+            }
+
+            if (watchProviders) {
+                urlSeries += `&with_watch_providers=${watchProviders}&watch_region=ES`;
+                urlMovies += `&with_watch_providers=${watchProviders}&watch_region=ES`;
+            }
+
+            Promise.all([
+                fetch(urlSeries, options).then(res => res.json()),
+                fetch(urlMovies, options).then(res => res.json())
+            ]).then(([seriesData, moviesData]) => {
+                const seriesResultsWithMediaType = seriesData.results.map(series => ({...series, media_type: 'tv'}));
+                const moviesResultsWithMediaType = moviesData.results.map(movie => ({...movie, media_type: 'movie'}));
+
+                setSeriesResults(seriesResultsWithMediaType);
+                setMoviesResults(moviesResultsWithMediaType);
+
+                seriesData.total_pages > moviesData.total_pages ? setTotalPages(seriesData.total_pages) : setTotalPages(moviesData.total_pages);
+            });
         }
-    }, [term, page]);
+    }, [genre, location.search, page, term, watchProviders, sortBy]);
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
@@ -43,20 +85,11 @@ function Search() {
     return (
         <>
             <Navigation/>
-            <Divider/>
-            <div>
-                {term ? (
-                    <>
-                        {/* eslint-disable-next-line react/no-unescaped-entities */}
-                        <h1 className="text-center text-2xl my-6">Resultados de "{term}"</h1>
-                        <div>
-                            <MoviesCarousel movies={searchResults} onPageChange={handlePageChange} page={page}
-                                            totalPages={totalPages}/>
-                        </div>
-                    </>
-                ) : (
-                    <h1 className="text-center text-2xl my-6">No se ha introducido ninguna palabra</h1>
-                )}
+            <div className="bg-primary-50">
+                <Divider/>
+                <h2 className="text-center text-2xl my-6">Búsqueda</h2>
+                <SearchCarousel movies={moviesResults} series={seriesResults} page={page} totalPages={totalPages}
+                                onPageChange={handlePageChange}/>
             </div>
             <Footer/>
         </>

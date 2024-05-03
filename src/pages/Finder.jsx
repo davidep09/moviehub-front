@@ -1,73 +1,189 @@
 import {Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input} from "@nextui-org/react";
 import SearchIcon from "../components/icons/SearchIcon.jsx";
 import {useMemo, useState} from "react";
-import {Navigate, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import Navigation from "../components/Navigation.jsx";
 import {useAuth0} from "@auth0/auth0-react";
+import Footer from "../components/Footer.jsx";
 
 function Finder() {
     const {isAuthenticated, isLoading} = useAuth0();
-    const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
-    const [selectedGenre, setSelectedGenre] = useState(new Set(["Género"]));
+    if (!isAuthenticated && !isLoading) {
+        navigate("/");
+    }
 
-    const selectedValue = useMemo(
-        () => Array.from(selectedGenre).join(", ").replaceAll("_", " "),
-        [selectedGenre]
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const genres = {
+        10759: "Acción & Aventura",
+        16: "Animación",
+        35: "Comedia",
+        80: "Crimen",
+        99: "Documental",
+        18: "Drama",
+        10751: "Familia",
+        10762: "Niños",
+        9648: "Misterio",
+        10763: "Noticias",
+        10764: "Reality",
+        10765: "Ciencia-ficción & Fantasía",
+        10766: "Telenovela",
+        10767: "Conversación",
+        10768: "Guerra & Política",
+        37: "Del oeste",
+    }
+    const [selectedKeysGenre, setSelectedKeysGenre] = useState(new Set([]));
+    useMemo(
+        () => Array.from(selectedKeysGenre).join(", ").replaceAll("_", " "),
+        [selectedKeysGenre]
     );
 
-    const handleClick = () => {
-        navigate(`/search/${searchTerm}`);
+    const watchProviders = {
+        337: "Disney Plus",
+        119: "Amazon Prime Video",
+        8: "Netflix",
+        384: "HBO Max",
+        2: "Apple TV",
+        63: "Filmin",
+        1773: "SkyShowtime",
+        149: "Movistar Plus",
+        35: "Rakuten TV",
+        62: "Atresplayer"
+    }
+    const [selectedKeysWatchProviders, setSelectedKeysWatchProviders] = useState(new Set([]));
+    useMemo(
+        () => Array.from(selectedKeysWatchProviders).join(", ").replaceAll("_", " "),
+        [selectedKeysWatchProviders]
+    );
+
+    const sortBy = {
+        "popularity.desc": "Popularidad",
+        "vote_average.desc": "Valoración",
+        "primary_release_date.desc": "Fecha de estreno más reciente",
+        "primary_release_date.asc": "Fecha de estreno más antigua",
+        "title.desc": "Título"
+    }
+    const [selectedKeysSortBy, setSelectedKeysSortBy] = useState(new Set([]));
+    useMemo(
+        () => Array.from(selectedKeysSortBy).join(", ").replaceAll("_", " "),
+        [selectedKeysSortBy]
+    );
+
+    const handleClickBuscarPorFiltros = () => {
+        navigate(`/search?sortBy=${Array.from(selectedKeysSortBy)}&genre=${Array.from(selectedKeysGenre).join(",")}&watchProviders=${Array.from(selectedKeysWatchProviders).join(",")}`);
     };
 
-    if (!isAuthenticated && !isLoading) {
-        return <Navigate to="/"/>;
+    const handleClickBuscarPorPalabra = () => {
+        navigate(`/search?term=${searchTerm}`);
     }
 
     return (
         <>
             <Navigation/>
             <Divider/>
-            <h1 className="text-center text-2xl my-6">Buscar</h1>
+            <h2 className="text-center text-2xl my-6">Buscar por nombre</h2>
             <div className="flex w-1/2 m-auto my-6">
                 <Input type="search" placeholder="Buscar película o serie"
                        className="flex-grow"
                        value={searchTerm}
                        onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button onClick={handleClick} className="ml-2" variant="flat" color="primary" disabled={!searchTerm}
+                <Button onClick={handleClickBuscarPorPalabra} className="ml-2" variant="flat" color="primary"
                         isIconOnly>
                     <SearchIcon/>
                 </Button>
             </div>
-            <div className="flex w-1/2 m-auto my-6">
-                <Dropdown>
-                    <DropdownTrigger>
-                        <Button
-                            variant="bordered"
-                            className="capitalize"
+            <Divider className="w-[70%] mx-auto"/>
+            <h2 className="text-center text-2xl my-6">Buscar por filtros</h2>
+            <div className="flex w-1/2 m-auto my-6 justify-center">
+                <div className="mx-1">
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="bordered"
+                                className="capitalize"
+                            >
+                                Género
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selecciona uno o varios géneros"
+                            variant="flat"
+                            closeOnSelect={false}
+                            disallowEmptySelection
+                            selectionMode="multiple"
+                            selectedKeys={selectedKeysGenre}
+                            onSelectionChange={setSelectedKeysGenre}
                         >
-                            {selectedValue}
-                        </Button>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                        aria-label="Single selection example"
-                        variant="flat"
-                        disallowEmptySelection
-                        selectionMode="single"
-                        selectedKeys={selectedGenre}
-                        onSelectionChange={setSelectedGenre}
-                    >
-                        <DropdownItem key="action">Acción</DropdownItem>
-                        <DropdownItem key="animation">Animación</DropdownItem>
-                        <DropdownItem key="comedy">Comedia</DropdownItem>
-                        <DropdownItem key="documentary">Documental</DropdownItem>
-                        <DropdownItem key="drama">Drama</DropdownItem>
-                        <DropdownItem key="family">Familiar</DropdownItem>
-                        <DropdownItem key="fantasy">Fantasía</DropdownItem>
-                    </DropdownMenu>
-                </Dropdown>
+                            {Object.keys(genres).map((key) => (
+                                <DropdownItem key={key} eventKey={key}>
+                                    {genres[key]}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+                <div className="mx-1">
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="bordered"
+                                className="capitalize"
+                            >
+                                Plataforma
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selecciona una o varias plataformas"
+                            variant="flat"
+                            closeOnSelect={false}
+                            disallowEmptySelection
+                            selectionMode="multiple"
+                            selectedKeys={selectedKeysWatchProviders}
+                            onSelectionChange={setSelectedKeysWatchProviders}
+                        >
+                            {Object.keys(watchProviders).map((key) => (
+                                <DropdownItem key={key} eventKey={key}>
+                                    {watchProviders[key]}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+                <div className="mx-1">
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="bordered"
+                                className="capitalize"
+                            >
+                                Ordenar
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selecciona una o varias plataformas"
+                            variant="flat"
+                            closeOnSelect={false}
+                            disallowEmptySelection
+                            selectionMode="single"
+                            selectedKeys={selectedKeysSortBy}
+                            onSelectionChange={setSelectedKeysSortBy}
+                        >
+                            {Object.keys(sortBy).map((key) => (
+                                <DropdownItem key={key} eventKey={key}>
+                                    {sortBy[key]}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
+                <Button onClick={handleClickBuscarPorFiltros} className="ml-2" variant="flat" color="primary"
+                        isIconOnly>
+                    <SearchIcon/>
+                </Button>
             </div>
+            <Footer/>
         </>
     );
 }
