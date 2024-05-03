@@ -8,9 +8,8 @@ function TrendsCarousel({trends}) {
 
     return (
         <>
-            <h2 className="text-2xl text-center mt-4">Tendencias de MovieHub</h2>
+            <h2 className="text-center text-2xl my-6">Lo más gustado de MovieHub</h2>
             <div className="flex flex-col sm:flex-row flex-wrap">
-                {/* eslint-disable-next-line react/prop-types */}
                 {trends && trends.map((trend, index) => (
                     <div key={index} className="w-full sm:w-1/5 p-4">
                         <CustomCard movie={trend}/>

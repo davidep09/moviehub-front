@@ -1,11 +1,7 @@
-import {useEffect} from 'react';
 import {Input, Button, Image} from '@nextui-org/react';
+import PropTypes from "prop-types";
 
-export default function FormProfile(usuario) {
-
-    useEffect(() => {
-        console.log(usuario);
-    }, [usuario]);
+function FormProfile({usuario}) {
 
     return (
         usuario && <div className="flex flex-col items-center justify-center min-h-screen bg-primary-50">
@@ -29,3 +25,16 @@ export default function FormProfile(usuario) {
         </div>
     );
 }
+
+FormProfile.propTypes = {
+    usuario: PropTypes.shape({
+        picture: PropTypes.string,
+        given_name: PropTypes.string,
+        name: PropTypes.string,
+        family_name: PropTypes.string,
+        email: PropTypes.string,
+        nickname: PropTypes.string
+    })
+}
+
+export default FormProfile;

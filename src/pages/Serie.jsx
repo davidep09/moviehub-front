@@ -12,6 +12,7 @@ export default function Serie() {
     const {id} = useParams();
     const [datosSerie, setDatosSerie] = useState([]);
     const {isAuthenticated} = useAuth0();
+    const defaultImage = "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg";
 
     useEffect(() => {
         const options = {
@@ -38,8 +39,8 @@ export default function Serie() {
                     originalName: serieDataResponse.original_name,
                     year: serieDataResponse.first_air_date ? new Date(serieDataResponse.first_air_date).getFullYear() : 'N/A',
                     tagline: serieDataResponse.tagline ? serieDataResponse.tagline : '',
-                    backdrop_path: `https://image.tmdb.org/t/p/original${serieDataResponse.backdrop_path}`,
-                    poster_path: `https://image.tmdb.org/t/p/w500${serieDataResponse.poster_path}`,
+                    backdrop_path: serieDataResponse.backdrop_path ? `https://image.tmdb.org/t/p/original${serieDataResponse.backdrop_path}` : defaultImage,
+                    poster_path: serieDataResponse.poster_path ? `https://image.tmdb.org/t/p/w500${serieDataResponse.poster_path}` : defaultImage,
                     first_air_date: serieDataResponse.first_air_date ? new Date(serieDataResponse.first_air_date).toLocaleDateString() : 'N/A',
                     vote_average: serieDataResponse.vote_average,
                     overview: serieDataResponse.overview ? serieDataResponse.overview : 'No hay sinopsis disponible.',
@@ -55,7 +56,7 @@ export default function Serie() {
                     numSeasons: serieDataResponse.number_of_seasons,
                     cast: castDataResponse.cast.slice(0, 10).map(actor => ({
                         name: actor.name,
-                        profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : "",
+                        profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : defaultImage,
                         roles: actor.roles.map(role => role.character)
                     })),
                     streamingPlatforms: providersDataResponse.results.ES ? providersDataResponse.results.ES.flatrate : []
