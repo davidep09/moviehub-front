@@ -2,7 +2,7 @@ import {Pagination, Spacer} from "@nextui-org/react";
 import CustomCard from "./CustomCard.jsx";
 import PropTypes from "prop-types";
 
-export default function MoviesCarousel({movies, page, totalPages, onPageChange}) {
+function MoviesCarousel({movies, page, totalPages, onPageChange}) {
     return (
         <>
             <div className="flex flex-wrap justify-between">
@@ -26,3 +26,5 @@ MoviesCarousel.propTypes = {
     totalPages: PropTypes.number.isRequired,
     onPageChange: PropTypes.func.isRequired
 };
+
+export default MoviesCarousel;

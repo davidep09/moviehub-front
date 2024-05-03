@@ -20,7 +20,7 @@ function App() {
                 <Route path="/trends" element={<Trends/>}/>
                 <Route path="/movie/:id" element={<Movie/>}/>
                 <Route path="/serie/:id" element={<Serie/>}/>
-                <Route path="/search/:term" element={<Search/>}/>
+                <Route path="/search/" element={<Search/>}/>
                 <Route path="/finder" element={<Finder/>}/>
             </Routes>
         </NextUIProvider>

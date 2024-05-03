@@ -15,7 +15,6 @@ function Finder() {
 
     const [searchTerm, setSearchTerm] = useState('');
 
-    const [selectedGenre, setSelectedGenre] = useState(new Set(["Género"]));
     const genres = {
         10759: "Acción & Aventura",
         16: "Animación",
@@ -34,33 +33,56 @@ function Finder() {
         10768: "Guerra & Política",
         37: "Del oeste",
     }
-
-    const selectedValueGenre = useMemo(
-        () => Array.from(selectedGenre).join(", ").replaceAll("_", " "),
-        [selectedGenre]
+    const [selectedKeysGenre, setSelectedKeysGenre] = useState(new Set([]));
+    useMemo(
+        () => Array.from(selectedKeysGenre).join(", ").replaceAll("_", " "),
+        [selectedKeysGenre]
     );
 
-    const handleClickBuscar = () => {
-        navigate(`/search/${searchTerm}`);
+    const watchProviders = {
+        337: "Disney Plus",
+        119: "Amazon Prime Video",
+        8: "Netflix",
+        384: "HBO Max",
+        2: "Apple TV",
+        63: "Filmin",
+        1773: "SkyShowtime",
+        149: "Movistar Plus",
+        35: "Rakuten TV",
+        62: "Atresplayer"
+    }
+    const [selectedKeysWatchProviders, setSelectedKeysWatchProviders] = useState(new Set([]));
+    useMemo(
+        () => Array.from(selectedKeysWatchProviders).join(", ").replaceAll("_", " "),
+        [selectedKeysWatchProviders]
+    );
+
+    const handleClickBuscarPorFiltros = () => {
+        navigate(`/search?genre=${Array.from(selectedKeysGenre).join(",")}&watchProviders=${Array.from(selectedKeysWatchProviders).join(",")}`);
     };
+
+    const handleClickBuscarPorPalabra = () => {
+        navigate(`/search?term=${searchTerm}`);
+    }
 
     return (
         <>
             <Navigation/>
             <Divider/>
-            <h1 className="text-center text-2xl my-6">Buscar</h1>
+            <h2 className="text-center text-2xl my-6">Buscar por nombre</h2>
             <div className="flex w-1/2 m-auto my-6">
                 <Input type="search" placeholder="Buscar película o serie"
                        className="flex-grow"
                        value={searchTerm}
                        onChange={(e) => setSearchTerm(e.target.value)}
                 />
-                <Button onClick={handleClickBuscar} className="ml-2" variant="flat" color="primary"
-                        disabled={!searchTerm}
+                <Button onClick={handleClickBuscarPorPalabra} className="ml-2" variant="flat" color="primary"
                         isIconOnly>
                     <SearchIcon/>
                 </Button>
             </div>
+            <Divider className="w-[70%] mx-auto"/>
+            <h2 className="text-center text-2xl my-6">Buscar por filtros</h2>
             <div className="flex w-1/2 m-auto my-6">
                 <Dropdown>
                     <DropdownTrigger>
@@ -68,24 +90,54 @@ function Finder() {
                             variant="bordered"
                             className="capitalize"
                         >
-                            {selectedValueGenre}
+                            Género
                         </Button>
                     </DropdownTrigger>
                     <DropdownMenu
-                        aria-label="Single selection example"
+                        aria-label="Selecciona uno o varios géneros"
                         variant="flat"
+                        closeOnSelect={false}
                         disallowEmptySelection
                         selectionMode="multiple"
-                        selectedKeys={selectedGenre}
-                        onSelectionChange={setSelectedGenre}
+                        selectedKeys={selectedKeysGenre}
+                        onSelectionChange={setSelectedKeysGenre}
                     >
-                        {Object.entries(genres).map(([key, value]) => (
+                        {Object.keys(genres).map((key) => (
                             <DropdownItem key={key} eventKey={key}>
-                                {value}
+                                {genres[key]}
                             </DropdownItem>
                         ))}
                     </DropdownMenu>
                 </Dropdown>
+                <Dropdown>
+                    <DropdownTrigger>
+                        <Button
+                            variant="bordered"
+                            className="capitalize"
+                        >
+                            Plataforma
+                        </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                        aria-label="Selecciona una o varias plataformas"
+                        variant="flat"
+                        closeOnSelect={false}
+                        disallowEmptySelection
+                        selectionMode="multiple"
+                        selectedKeys={selectedKeysWatchProviders}
+                        onSelectionChange={setSelectedKeysWatchProviders}
+                    >
+                        {Object.keys(watchProviders).map((key) => (
+                            <DropdownItem key={key} eventKey={key}>
+                                {watchProviders[key]}
+                            </DropdownItem>
+                        ))}
+                    </DropdownMenu>
+                </Dropdown>
+                <Button onClick={handleClickBuscarPorFiltros} className="ml-2" variant="flat" color="primary"
+                        isIconOnly>
+                    <SearchIcon/>
+                </Button>
             </div>
             <Footer/>
         </>
