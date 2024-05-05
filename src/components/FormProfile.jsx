@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 function FormProfile({usuario}) {
 
     return (
-        usuario && <div className="flex flex-col items-center justify-center min-h-screen bg-primary-50">
+        usuario && <div className="flex flex-col items-center justify-center min-h-screen">
             <h1 className="text-2xl mb-4">Perfil</h1>
             <Image src={usuario.picture ? usuario.picture : ""} alt="Foto de perfil" radius="full"
                    className="mb-8 max-w-40"/>

@@ -3,7 +3,7 @@ import {Image} from '@nextui-org/react';
 
 function SerieProvider({datosSerie}) {
     return (
-        <div className="flex flex-col items-center bg-primary-50">
+        <div className="flex flex-col items-center">
             <h2 className="text-2xl font-bold text-center my-4">Disponible en:</h2>
             <div className="flex flex-col mb-4 items-center space-y-5 md:flex-row md:space-x-5 md:space-y-0">
                 {datosSerie.streamingPlatforms && datosSerie.streamingPlatforms.length > 0 ? datosSerie.streamingPlatforms.map((platform, index) => (

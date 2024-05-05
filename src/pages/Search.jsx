@@ -85,7 +85,7 @@ function Search() {
     return (
         <>
             <Navigation/>
-            <div className="bg-primary-50">
+            <div>
                 <Divider/>
                 <h2 className="text-center text-2xl my-6">Búsqueda</h2>
                 <SearchCarousel movies={moviesResults} series={seriesResults} page={page} totalPages={totalPages}

@@ -1,5 +1,5 @@
 import {Pagination} from "@nextui-org/react";
-import CustomCard from "./CustomCard.jsx";
+import MovieCard from "./MovieCard.jsx";
 import PropTypes from "prop-types";
 
 function SearchCarousel({movies, series, page, totalPages, onPageChange}) {
@@ -11,7 +11,7 @@ function SearchCarousel({movies, series, page, totalPages, onPageChange}) {
                     <div className="flex flex-wrap -mx-2">
                         {movies && movies.map((movie, index) => (
                             <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 p-2">
-                                <CustomCard movie={movie}/>
+                                <MovieCard movie={movie}/>
                             </div>
                         ))}
                     </div>
@@ -21,7 +21,7 @@ function SearchCarousel({movies, series, page, totalPages, onPageChange}) {
                     <div className="flex flex-wrap -mx-2">
                         {series && series.map((movie, index) => (
                             <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/3 xl:w-1/3 p-2">
-                                <CustomCard movie={movie}/>
+                                <MovieCard movie={movie}/>
                             </div>
                         ))}
                     </div>

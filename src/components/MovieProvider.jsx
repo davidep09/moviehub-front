@@ -5,7 +5,7 @@ function MovieProvider({datosPelicula}) {
     const baseURL = "https://image.tmdb.org/t/p/w500"; // replace with your actual base URL
 
     return (
-        <div className="flex flex-col items-center bg-primary-50">
+        <div className="flex flex-col items-center">
             <h2 className="text-2xl font-bold text-center my-4">Disponible en:</h2>
             <div className="flex flex-col mb-4 items-center space-y-5 md:flex-row md:space-x-5 md:space-y-0">
                 {datosPelicula.streamingPlatforms && datosPelicula.streamingPlatforms.length > 0 ? datosPelicula.streamingPlatforms.map((platform, index) => {

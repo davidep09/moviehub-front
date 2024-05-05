@@ -8,6 +8,8 @@ import Serie from "./pages/Serie.jsx";
 import Profile from "./pages/Profile.jsx";
 import Search from "./pages/Search.jsx";
 import Finder from "./pages/Finder.jsx";
+import Lists from "./pages/Lists.jsx";
+import List from "./pages/List.jsx";
 
 function App() {
     const navigate = useNavigate();
@@ -22,6 +24,8 @@ function App() {
                 <Route path="/serie/:id" element={<Serie/>}/>
                 <Route path="/search/" element={<Search/>}/>
                 <Route path="/finder" element={<Finder/>}/>
+                <Route path="/lists" element={<Lists/>}/>
+                <Route path="/list/:id" element={<List/>}/>
             </Routes>
         </NextUIProvider>
 

@@ -8,13 +8,14 @@ import {useEffect, useState} from "react";
 
 export default function Home() {
     const {isAuthenticated, isLoading} = useAuth0();
-    const [trends, setTrends] = useState([]);
+    const [mostLiked, setMostLiked] = useState([]);
 
 
     useEffect(() => {
         const requestOptions = {
             method: "GET",
-            redirect: "follow"
+            redirect: "follow",
+            mode: "cors"
         };
 
         const options = {
@@ -25,25 +26,22 @@ export default function Home() {
             }
         };
 
-        fetch("http://localhost:8080/trends", requestOptions)
-            .then((response) => response.json())
-            .then((result) => {
-                const trends = result._embedded.trends;
-                const tmdbRequests = trends.map((trend) => {
-                    const url = trend.type === 'movie'
-                        ? `https://api.themoviedb.org/3/movie/${trend.id}?language=es-ES`
-                        : `https://api.themoviedb.org/3/tv/${trend.id}?language=es-ES`;
-                    return fetch(url, options)
-                        .then((response) => response.json())
-                        .then((tmdbResult) => ({
-                            ...tmdbResult,
-                            media_type: trend.type
-                        }));
+        fetch("http://localhost:8080/totalLikes", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                const fetches = result.map(item => {
+                    const type = item.type === 'movie' ? 'movie' : 'tv';
+                    return fetch(`https://api.themoviedb.org/3/${type}/${item.id}?language=es-ES`, options)
+                        .then(response => response.json())
+                        .then(data => ({...data, media_type: type}));
                 });
-                return Promise.all(tmdbRequests);
+
+                return Promise.all(fetches);
             })
-            .then((tmdbResults) => setTrends(tmdbResults))
-            .catch((error) => console.error(error));
+            .then(data => {
+                setMostLiked(data);
+            })
+            .catch(error => console.log('error', error));
     }, []);
 
     if (isLoading) {
@@ -57,10 +55,8 @@ export default function Home() {
     return (
         <>
             <Navigation/>
-            <div className="bg-primary-50">
-                <Divider/>
-                <TrendsCarousel trends={trends}/>
-            </div>
+            <Divider/>
+            <TrendsCarousel trends={mostLiked}/>
             <Footer/>
         </>
     );
