@@ -52,12 +52,10 @@ export default function Trends() {
     return (
         <>
             <Navigation/>
-            <div className="bg-primary-50">
-                <Divider/>
-                <h1 className="text-2xl text-center mt-4">Tendencias de hoy</h1>
-                <MoviesCarousel movies={movies} page={page} totalPages={totalPages} onPageChange={handlePageChange}/>
-                <Footer/>
-            </div>
+            <Divider/>
+            <h1 className="text-center text-2xl my-6">Tendencias de hoy</h1>
+            <MoviesCarousel movies={movies} page={page} totalPages={totalPages} onPageChange={handlePageChange}/>
+            <Footer/>
         </>
     );
 }

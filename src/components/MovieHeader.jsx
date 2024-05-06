@@ -1,16 +1,55 @@
 import {
     Button,
-    Chip,
+    Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger,
     Image, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader,
     Textarea, useDisclosure
 } from "@nextui-org/react";
 import PropTypes from "prop-types";
+import PlusIcon from "../assets/icons/PlusIcon.jsx";
 
-export default function MovieHeader({datosPelicula}) {
+export default function MovieHeader({datosPelicula, listas}) {
     const {onOpen: openTrailerModal, onClose: closeTrailerModal, isOpen: isTrailerModalOpen} = useDisclosure();
     const {onOpen: openCastModal, onClose: closeCastModal, isOpen: isCastModalOpen} = useDisclosure();
+    const {isOpen, onOpen, onClose} = useDisclosure();
     const normalizedRating = Math.round(datosPelicula.vote_average / 2);
     const director = datosPelicula.crew ? datosPelicula.crew.find(member => member.roles === 'Director') : undefined;
+
+    const handleAddToList = (listId) => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "listId": listId,
+            "movieId": datosPelicula.id,
+            "type": "movie"
+        });
+
+        fetch(`http://localhost:8080/itemslist/${listId}`, {
+            method: "GET",
+            headers: myHeaders,
+        })
+            .then(response => response.json())
+            .then(list => {
+                const itemExists = list.some(item => item.movieId === datosPelicula.id && item.type === "movie");
+
+                if (!itemExists) {
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: "follow"
+                    };
+
+                    fetch("http://localhost:8080/itemslist", requestOptions)
+                        .then((response) => response.text())
+                        .catch((error) => console.error(error));
+                } else {
+                    alert("Este elemento ya está en la lista.");
+                }
+            })
+            .catch((error) => console.error(error));
+    }
+
 
     return (
         <div className="flex flex-col sm:flex-row p-10 bg-no-repeat bg-cover bg-center relative font-body"
@@ -63,6 +102,21 @@ export default function MovieHeader({datosPelicula}) {
                             }}>
                         Ver tráiler
                     </Button>
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button className="mt-4 max-w-32 mx-4" onPress={onOpen}
+                                    isIconOnly>
+                                <PlusIcon/>
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu isOpen={isOpen} onClose={onClose}>
+                            {listas.map((lista, index) => (
+                                <DropdownItem key={index} onPress={() => handleAddToList(lista.id)}>
+                                    {lista.name}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
                 </div>
             </div>
             <Modal
@@ -117,6 +171,7 @@ export default function MovieHeader({datosPelicula}) {
 
 MovieHeader.propTypes = {
     datosPelicula: PropTypes.shape({
+        id: PropTypes.number,
         title: PropTypes.string,
         originalName: PropTypes.string,
         release_date: PropTypes.string,
@@ -136,5 +191,10 @@ MovieHeader.propTypes = {
             profile_path: PropTypes.string
         })),
         trailer_url: PropTypes.string
-    }).isRequired
+    }).isRequired,
+
+    listas: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string
+    })).isRequired
 };

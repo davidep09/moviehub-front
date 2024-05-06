@@ -85,6 +85,8 @@ function Finder() {
             <h2 className="text-center text-2xl my-6">Buscar por nombre</h2>
             <div className="flex w-1/2 m-auto my-6">
                 <Input type="search" placeholder="Buscar película o serie"
+                       variant="flat"
+                       color="default"
                        className="flex-grow"
                        value={searchTerm}
                        onChange={(e) => setSearchTerm(e.target.value)}
@@ -101,8 +103,9 @@ function Finder() {
                     <Dropdown>
                         <DropdownTrigger>
                             <Button
-                                variant="bordered"
+                                variant="flat"
                                 className="capitalize"
+                                color="default"
                             >
                                 Género
                             </Button>
@@ -128,8 +131,9 @@ function Finder() {
                     <Dropdown>
                         <DropdownTrigger>
                             <Button
-                                variant="bordered"
+                                variant="flat"
                                 className="capitalize"
+                                color="default"
                             >
                                 Plataforma
                             </Button>
@@ -155,8 +159,9 @@ function Finder() {
                     <Dropdown>
                         <DropdownTrigger>
                             <Button
-                                variant="bordered"
+                                variant="flat"
                                 className="capitalize"
+                                color="default"
                             >
                                 Ordenar
                             </Button>
@@ -184,6 +189,7 @@ function Finder() {
                 </Button>
             </div>
             <Footer/>
+
         </>
     );
 }

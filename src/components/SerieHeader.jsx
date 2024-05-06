@@ -7,13 +7,50 @@ import {
     ModalContent,
     ModalHeader,
     ModalBody,
-    useDisclosure, ModalFooter
+    useDisclosure, ModalFooter, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger
 } from "@nextui-org/react";
 import PropTypes from "prop-types";
+import PlusIcon from "../assets/icons/PlusIcon.jsx";
 
-export default function SerieHeader({datosSerie}) {
+export default function SerieHeader({datosSerie, listas}) {
     const normalizedRating = Math.round(datosSerie.vote_average / 2);
     const {isOpen, onOpen, onClose} = useDisclosure();
+
+    const handleAddToList = (listId) => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "listId": listId,
+            "movieId": datosSerie.id,
+            "type": "tv"
+        });
+
+        fetch(`http://localhost:8080/itemslist/${listId}`, {
+            method: "GET",
+            headers: myHeaders,
+        })
+            .then(response => response.json())
+            .then(list => {
+                const itemExists = list.some(item => item.movieId === datosSerie.id && item.type === "tv");
+
+                if (!itemExists) {
+                    const requestOptions = {
+                        method: "POST",
+                        headers: myHeaders,
+                        body: raw,
+                        redirect: "follow"
+                    };
+
+                    fetch("http://localhost:8080/itemslist", requestOptions)
+                        .then((response) => response.text())
+                        .catch((error) => console.error(error));
+                } else {
+                    alert("Este elemento ya está en la lista.");
+                }
+            })
+            .catch((error) => console.error(error));
+    }
 
     return (
         <div className="flex flex-col sm:flex-row p-10 bg-no-repeat bg-cover bg-center relative font-body"
@@ -49,9 +86,25 @@ export default function SerieHeader({datosSerie}) {
                     value={datosSerie.overview}
                     className="mt-4 mx-auto sm:mx-0"
                 />
-                <Button className="mt-4 max-w-32" onPress={onOpen}>
-                    Reparto
-                </Button>
+                <div className="flex flex-row">
+                    <Button className="mt-4 max-w-32 mx-2" onPress={onOpen}>
+                        Reparto
+                    </Button>
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button className="mt-4 max-w-32 mx-2" onPress={onOpen} isIconOnly>
+                                <PlusIcon/>
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu>
+                            {listas.map((lista, index) => (
+                                <DropdownItem key={index} onPress={() => handleAddToList(lista.id)}>
+                                    {lista.name}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
             </div>
 
             <Modal
@@ -90,6 +143,7 @@ export default function SerieHeader({datosSerie}) {
 
 SerieHeader.propTypes = {
     datosSerie: PropTypes.shape({
+        id: PropTypes.number,
         backdrop_path: PropTypes.string,
         poster_path: PropTypes.string,
         name: PropTypes.string,
@@ -105,5 +159,11 @@ SerieHeader.propTypes = {
             name: PropTypes.string,
             roles: PropTypes.string
         }))
-    }).isRequired
+    }).isRequired,
+
+    listas: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string
+    })).isRequired
+
 };

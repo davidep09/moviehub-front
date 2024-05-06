@@ -2,7 +2,7 @@ import {Card, CardBody, CardHeader, Image} from "@nextui-org/react";
 import {useNavigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-function CustomCard({movie}) {
+function MovieCard({movie}) {
     const navigate = useNavigate();
     const defaultImage = "https://motivatevalmorgan.com/wp-content/uploads/2016/06/default-movie.jpg";
     const handlerClick = () => {
@@ -32,7 +32,7 @@ function CustomCard({movie}) {
     );
 }
 
-CustomCard.propTypes = {
+MovieCard.propTypes = {
     movie: PropTypes.shape({
         id: PropTypes.number.isRequired,
         media_type: PropTypes.string.isRequired,
@@ -45,4 +45,4 @@ CustomCard.propTypes = {
     }).isRequired
 };
 
-export default CustomCard;
+export default MovieCard;

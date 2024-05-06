@@ -1,4 +1,4 @@
-import CustomCard from "./CustomCard.jsx";
+import MovieCard from "./MovieCard.jsx";
 import PropTypes from "prop-types";
 
 function TrendsCarousel({trends}) {
@@ -12,7 +12,7 @@ function TrendsCarousel({trends}) {
             <div className="flex flex-col sm:flex-row flex-wrap">
                 {trends && trends.map((trend, index) => (
                     <div key={index} className="w-full sm:w-1/5 p-4">
-                        <CustomCard movie={trend}/>
+                        <MovieCard movie={trend}/>
                     </div>
                 ))}
             </div>

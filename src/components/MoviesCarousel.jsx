@@ -1,5 +1,5 @@
 import {Pagination, Spacer} from "@nextui-org/react";
-import CustomCard from "./CustomCard.jsx";
+import MovieCard from "./MovieCard.jsx";
 import PropTypes from "prop-types";
 
 function MoviesCarousel({movies, page, totalPages, onPageChange}) {
@@ -8,7 +8,7 @@ function MoviesCarousel({movies, page, totalPages, onPageChange}) {
             <div className="flex flex-wrap justify-between">
                 {movies && movies.map((movie, index) => (
                     <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/5 p-4">
-                        <CustomCard movie={movie}/>
+                        <MovieCard movie={movie}/>
                     </div>
                 ))}
             </div>
