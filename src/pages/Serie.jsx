@@ -9,9 +9,10 @@ import {useAuth0} from "@auth0/auth0-react";
 import SerieProvider from "../components/SerieProvider.jsx";
 
 export default function Serie() {
+    const {isAuthenticated, user} = useAuth0();
     const {id} = useParams();
     const [datosSerie, setDatosSerie] = useState([]);
-    const {isAuthenticated} = useAuth0();
+    const [listas, setListas] = useState([]);
     const defaultImage = "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg";
 
     useEffect(() => {
@@ -35,6 +36,7 @@ export default function Serie() {
         Promise.all([fetchSerieData, fetchCastData, fetchProvidersData])
             .then(([serieDataResponse, castDataResponse, providersDataResponse]) => {
                 const serieData = {
+                    id: serieDataResponse.id,
                     name: serieDataResponse.name,
                     originalName: serieDataResponse.original_name,
                     year: serieDataResponse.first_air_date ? new Date(serieDataResponse.first_air_date).getFullYear() : 'N/A',
@@ -67,6 +69,20 @@ export default function Serie() {
             .catch(err => console.error(err));
     }, [id]);
 
+    useEffect(() => {
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            mode: "cors"
+        };
+
+        const idUsuario = user.sub.replace("|", "-");
+        fetch(`http://localhost:8080/lists/user/${idUsuario}`, requestOptions)
+            .then(response => response.json())
+            .then(result => setListas(result))
+            .catch(error => console.log('error', error));
+    }, [user.sub]);
+
     if (!isAuthenticated) {
         return <Navigate to={"/"}/>;
     }
@@ -75,7 +91,7 @@ export default function Serie() {
         <>
             <Navigation/>
             <Divider/>
-            <SerieHeader datosSerie={datosSerie}/>
+            <SerieHeader datosSerie={datosSerie} listas={listas}/>
             <SerieSeasons seasons={datosSerie.seasons}/>
             <SerieProvider datosSerie={datosSerie}/>
             <Footer/>

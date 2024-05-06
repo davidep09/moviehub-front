@@ -8,9 +8,10 @@ import {Navigate, useParams} from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
 
 export default function Movie() {
-    const {isAuthenticated} = useAuth0();
+    const {isAuthenticated, user} = useAuth0();
     const {id} = useParams();
     const [datosPelicula, setDatosPelicula] = useState([]);
+    const [listas, setListas] = useState([]);
     const defaultImage = "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg";
 
     useEffect(() => {
@@ -37,6 +38,7 @@ export default function Movie() {
         Promise.all([fetchMovieData, fetchCastData, fetchVideosData, fetchProvidersData])
             .then(([movieDataResponse, castDataResponse, videosDataResponse, providersDataResponse]) => {
                 const movieData = {
+                    id: movieDataResponse.id,
                     title: movieDataResponse.title,
                     originalName: movieDataResponse.original_title,
                     tagline: movieDataResponse.tagline ? movieDataResponse.tagline : '',
@@ -85,6 +87,20 @@ export default function Movie() {
             .catch(err => console.error(err));
     }, [id]);
 
+    useEffect(() => {
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow",
+            mode: "cors"
+        };
+
+        const idUsuario = user.sub.replace("|", "-");
+        fetch(`http://localhost:8080/lists/user/${idUsuario}`, requestOptions)
+            .then(response => response.json())
+            .then(result => setListas(result))
+            .catch(error => console.log('error', error));
+    }, [user.sub]);
+
     if (!isAuthenticated) {
         return <Navigate to={"/"}/>;
     }
@@ -92,7 +108,7 @@ export default function Movie() {
     return (
         <>
             <Navigation/>
-            <MovieHeader datosPelicula={datosPelicula}/>
+            <MovieHeader datosPelicula={datosPelicula} listas={listas}/>
             <MovieProvider datosPelicula={datosPelicula}/>
             <Divider/>
             <Footer/>
