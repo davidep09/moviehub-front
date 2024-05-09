@@ -5,7 +5,7 @@ import {
     Textarea, useDisclosure
 } from "@nextui-org/react";
 import PropTypes from "prop-types";
-import PlusIcon from "../assets/icons/PlusIcon.jsx";
+import PlusIcon from "./icons/PlusIcon.jsx";
 
 export default function MovieHeader({datosPelicula, listas}) {
     const {onOpen: openTrailerModal, onClose: closeTrailerModal, isOpen: isTrailerModalOpen} = useDisclosure();
@@ -42,6 +42,7 @@ export default function MovieHeader({datosPelicula, listas}) {
 
                     fetch("http://localhost:8080/itemslist", requestOptions)
                         .then((response) => response.text())
+                        .then(() => alert("Elemento añadido correctamente."))
                         .catch((error) => console.error(error));
                 } else {
                     alert("Este elemento ya está en la lista.");
@@ -70,7 +71,12 @@ export default function MovieHeader({datosPelicula, listas}) {
             </div>
             <div className="flex flex-col w-full sm:pl-16 z-10">
                 <p className="text-center text-white font-semibold sm:text-left sm:flex-row">Fecha de
-                    estreno: {datosPelicula.release_date}</p>
+                    estreno: {new Date(datosPelicula.release_date).toLocaleDateString('es-ES', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    })}
+                </p>
                 <p className="text-center text-white font-semibold sm:text-left sm:flex-row">
                     Puntuación:&nbsp;
                     {[...Array(5)].map((star, i) => {

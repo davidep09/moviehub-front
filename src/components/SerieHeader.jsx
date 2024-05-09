@@ -10,7 +10,7 @@ import {
     useDisclosure, ModalFooter, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger
 } from "@nextui-org/react";
 import PropTypes from "prop-types";
-import PlusIcon from "../assets/icons/PlusIcon.jsx";
+import PlusIcon from "./icons/PlusIcon.jsx";
 
 export default function SerieHeader({datosSerie, listas}) {
     const normalizedRating = Math.round(datosSerie.vote_average / 2);
@@ -44,6 +44,7 @@ export default function SerieHeader({datosSerie, listas}) {
 
                     fetch("http://localhost:8080/itemslist", requestOptions)
                         .then((response) => response.text())
+                        .then(() => alert("Elemento añadido correctamente."))
                         .catch((error) => console.error(error));
                 } else {
                     alert("Este elemento ya está en la lista.");
