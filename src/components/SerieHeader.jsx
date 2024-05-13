@@ -213,7 +213,7 @@ SerieHeader.propTypes = {
         poster_path: PropTypes.string,
         name: PropTypes.string,
         originalName: PropTypes.string,
-        year: PropTypes.string,
+        year: PropTypes.number,
         status: PropTypes.string,
         first_air_date: PropTypes.string,
         vote_average: PropTypes.number,

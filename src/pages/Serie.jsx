@@ -1,21 +1,25 @@
 import {useEffect, useState} from "react";
 import {Navigate, useParams} from "react-router-dom";
-import {Divider} from "@nextui-org/react";
+import {Divider, Spinner} from "@nextui-org/react";
 import Navigation from "../components/Navigation.jsx";
 import SerieHeader from "../components/SerieHeader.jsx";
 import SerieSeasons from "../components/SerieSeasons.jsx";
 import Footer from "../components/Footer.jsx";
 import {useAuth0} from "@auth0/auth0-react";
 import SerieProvider from "../components/SerieProvider.jsx";
+import SerieComments from "../components/SerieComments.jsx";
 
 export default function Serie() {
     const {isAuthenticated, user} = useAuth0();
     const {id} = useParams();
+    const [isLoading, setIsLoading] = useState(true);
     const [datosSerie, setDatosSerie] = useState([]);
     const [listas, setListas] = useState([]);
     const defaultImage = "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg";
 
     useEffect(() => {
+        if (!id) return;
+
         const options = {
             method: 'GET',
             headers: {
@@ -33,8 +37,11 @@ export default function Serie() {
         const fetchProvidersData = fetch(`https://api.themoviedb.org/3/tv/${id}/watch/providers?`, options)
             .then(response => response.json());
 
-        Promise.all([fetchSerieData, fetchCastData, fetchProvidersData])
-            .then(([serieDataResponse, castDataResponse, providersDataResponse]) => {
+        const fetchCommentsData = fetch(`http://localhost:8080/comments/tv/${id}`)
+            .then(response => response.json());
+
+        Promise.all([fetchSerieData, fetchCastData, fetchProvidersData, fetchCommentsData])
+            .then(([serieDataResponse, castDataResponse, providersDataResponse, commentsDataResponse]) => {
                 const serieData = {
                     id: serieDataResponse.id,
                     name: serieDataResponse.name,
@@ -61,12 +68,16 @@ export default function Serie() {
                         profile_path: actor.profile_path ? `https://image.tmdb.org/t/p/w500${actor.profile_path}` : defaultImage,
                         roles: actor.roles.map(role => role.character)
                     })),
-                    streamingPlatforms: providersDataResponse.results.ES ? providersDataResponse.results.ES.flatrate : []
+                    streamingPlatforms: providersDataResponse.results.ES ? providersDataResponse.results.ES.flatrate : [],
+                    comments: commentsDataResponse ? commentsDataResponse : []
                 };
-
                 setDatosSerie(serieData);
+                setIsLoading(false);
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error(err);
+                setIsLoading(false);
+            });
     }, [id]);
 
     useEffect(() => {
@@ -87,6 +98,10 @@ export default function Serie() {
         return <Navigate to={"/"}/>;
     }
 
+    if (isLoading) {
+        return <Spinner size="large" label="Cargando.." className="m-auto"/>;
+    }
+
     return (
         <>
             <Navigation/>
@@ -94,6 +109,7 @@ export default function Serie() {
             <SerieHeader datosSerie={datosSerie} listas={listas}/>
             <SerieSeasons seasons={datosSerie.seasons}/>
             <SerieProvider datosSerie={datosSerie}/>
+            <SerieComments datosSerie={datosSerie}/>
             <Footer/>
         </>
     );
