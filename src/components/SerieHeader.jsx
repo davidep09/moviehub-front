@@ -11,10 +11,72 @@ import {
 } from "@nextui-org/react";
 import PropTypes from "prop-types";
 import PlusIcon from "./icons/PlusIcon.jsx";
+import HeartIcon from "./icons/HeartIcon.jsx";
+import HeartFilledIcon from "./icons/HeartFilledIcon.jsx";
+import {useState, useEffect} from "react";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function SerieHeader({datosSerie, listas}) {
+    const {user} = useAuth0();
     const normalizedRating = Math.round(datosSerie.vote_average / 2);
     const {isOpen, onOpen, onClose} = useDisclosure();
+
+    const [like, setLike] = useState({});
+    const [isLiked, setIsLiked] = useState(false);
+    useEffect(() => {
+        if (!datosSerie.id) {
+            return;
+        }
+        const usuario = user.sub.replace("|", "-");
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        fetch(`http://localhost:8080/likes/movie/${datosSerie.id}/${usuario}`, requestOptions)
+            .then(response => response.json())
+            .then((data) => {
+                if (data !== null) {
+                    setIsLiked(true);
+                    setLike(data);
+                } else {
+                    setIsLiked(false);
+                }
+            })
+            .catch(error => console.error(error));
+
+        console.log(isLiked);
+    }, [isLiked, datosSerie.id, user.sub]);
+    const handleLike = (idSerie) => {
+        const usuario = user.sub.replace("|", "-");
+        const requestOptions = {
+            headers: {'Content-Type': 'application/json'},
+            redirect: 'follow'
+        };
+
+        if (isLiked === false) {
+            requestOptions.method = 'POST';
+            requestOptions.body = JSON.stringify({
+                userId: usuario,
+                movieId: idSerie,
+                type: "tv"
+            });
+        } else {
+            requestOptions.method = 'DELETE';
+        }
+
+        const url = isLiked === false ? `http://localhost:8080/likes` : `http://localhost:8080/likes/${like.id}`;
+
+        fetch(url, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text().then(text => text ? JSON.parse(text) : {})
+            })
+            .then(() => setIsLiked(!isLiked))
+            .catch(error => console.error('There was a problem with the fetch operation: ' + error.message));
+    };
 
     const handleAddToList = (listId) => {
         const myHeaders = new Headers();
@@ -52,6 +114,7 @@ export default function SerieHeader({datosSerie, listas}) {
             })
             .catch((error) => console.error(error));
     }
+
 
     return (
         <div className="flex flex-col sm:flex-row p-10 bg-no-repeat bg-cover bg-center relative font-body"
@@ -105,6 +168,9 @@ export default function SerieHeader({datosSerie, listas}) {
                             ))}
                         </DropdownMenu>
                     </Dropdown>
+                    <Button className="mt-4 max-w-32 mx-2" isIconOnly onPress={() => handleLike(datosSerie.id)}>
+                        {isLiked ? <HeartFilledIcon/> : <HeartIcon/>}
+                    </Button>
                 </div>
             </div>
 
