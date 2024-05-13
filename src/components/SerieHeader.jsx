@@ -44,8 +44,6 @@ export default function SerieHeader({datosSerie, listas}) {
                 }
             })
             .catch(error => console.error(error));
-
-        console.log(isLiked);
     }, [isLiked, datosSerie.id, user.sub]);
     const handleLike = (idSerie) => {
         const usuario = user.sub.replace("|", "-");
