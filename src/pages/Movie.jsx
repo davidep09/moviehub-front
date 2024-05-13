@@ -1,15 +1,17 @@
 import Footer from "../components/Footer.jsx";
 import Navigation from "../components/Navigation.jsx";
-import {Divider} from "@nextui-org/react";
+import {Divider, Spinner} from "@nextui-org/react";
 import MovieHeader from "../components/MovieHeader.jsx";
 import MovieProvider from "../components/MovieProvider.jsx";
 import {useEffect, useState} from "react";
 import {Navigate, useParams} from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
+import MovieComments from "../components/MovieComments.jsx";
 
 export default function Movie() {
     const {isAuthenticated, user} = useAuth0();
     const {id} = useParams();
+    const [isLoading, setIsLoading] = useState(true);
     const [datosPelicula, setDatosPelicula] = useState([]);
     const [listas, setListas] = useState([]);
     const defaultImage = "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg";
@@ -81,10 +83,13 @@ export default function Movie() {
                         }));
                     }
                 }
-
                 setDatosPelicula(movieData);
+                setIsLoading(false);
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error(err);
+                setIsLoading(false);
+            });
     }, [id]);
 
     useEffect(() => {
@@ -105,11 +110,16 @@ export default function Movie() {
         return <Navigate to={"/"}/>;
     }
 
+    if (isLoading) {
+        return <Spinner size="large" label="Cargando.." className="m-auto"/>;
+    }
+
     return (
         <>
             <Navigation/>
             <MovieHeader datosPelicula={datosPelicula} listas={listas}/>
             <MovieProvider datosPelicula={datosPelicula}/>
+            <MovieComments datosPelicula={datosPelicula}/>
             <Divider/>
             <Footer/>
         </>

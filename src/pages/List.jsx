@@ -1,10 +1,10 @@
 import {useParams} from "react-router-dom";
 import Navigation from "../components/Navigation.jsx";
-import {Divider} from "@nextui-org/react";
+import {Button, Divider} from "@nextui-org/react";
 import {useEffect, useState} from "react";
 import Footer from "../components/Footer.jsx";
 import MovieCard from "../components/MovieCard.jsx";
-import PropTypes from "prop-types";
+import DeleteIcon from "../components/icons/DeleteIcon.jsx";
 
 function List() {
     const {id} = useParams();
@@ -12,6 +12,10 @@ function List() {
     const [items, setItems] = useState([]);
     const [tmdbItems, setTmdbItems] = useState([]);
     useEffect(() => {
+        fetchList();
+    }, [id]);
+
+    const fetchList = () => {
         const options = {
             method: 'GET',
             headers: {
@@ -47,7 +51,20 @@ function List() {
                 setTmdbItems(results);
             })
             .catch(error => console.log('error', error));
-    }, [id]);
+    }
+    const handleDelete = (itemId) => {
+        const requestOptions = {
+            method: "DELETE",
+            redirect: "follow"
+        };
+
+        fetch(`http://localhost:8080/itemslist/${itemId}`, requestOptions)
+            .then((response) => response.text())
+            .then(() => {
+                fetchList();
+            })
+            .catch((error) => console.error(error));
+    };
 
     return (
         <>
@@ -57,11 +74,23 @@ function List() {
             <div className="container mx-auto mb-4">
                 <div className="container">
                     <div className="flex flex-wrap">
-                        {tmdbItems.map((item, index) => (
+                        {tmdbItems.length === 0 ? (
+                            <p className="text-center">No hay elementos en la lista</p>
+                        ) : (tmdbItems.map((item, index) => (
                             <div key={index} className="w-full sm:w-1/2 lg:w-1/4 p-2">
+                                <Button
+                                    className="relative top-6 left-72 z-10"
+                                    size="sm"
+                                    variant="solid"
+                                    color="danger"
+                                    isIconOnly
+                                    onPress={() => handleDelete(items[index].id)}
+                                >
+                                    <DeleteIcon/>
+                                </Button>
                                 <MovieCard movie={item}/>
                             </div>
-                        ))}
+                        )))}
                     </div>
                 </div>
             </div>
@@ -70,8 +99,5 @@ function List() {
     );
 }
 
-List.propTypes = {
-    id: PropTypes.number.isRequired
-};
 
 export default List;

@@ -1,16 +1,17 @@
 import Navigation from "../components/Navigation.jsx";
 import Footer from "../components/Footer.jsx";
-import {Divider} from "@nextui-org/react";
+import {Button, ButtonGroup, Divider, Input} from "@nextui-org/react";
 import {useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import ListCard from "../components/ListCard.jsx";
-import PropTypes from "prop-types";
+import DeleteIcon from "../components/icons/DeleteIcon.jsx";
 
 function Lists() {
     const {user} = useAuth0();
     const [listas, setListas] = useState([]);
+    const [inputValue, setInputValue] = useState("");
 
-    useEffect(() => {
+    const fetchLists = () => {
         const requestOptions = {
             method: "GET",
             redirect: "follow",
@@ -22,7 +23,53 @@ function Lists() {
             .then(response => response.json())
             .then(result => setListas(result))
             .catch(error => console.log('error', error));
-    }, [user.sub]);
+    }
+
+    useEffect(() => {
+        fetchLists()
+    }, []);
+
+    const handleCrearLista = (id) => {
+        const idUsuario = id.replace("|", "-");
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            userId: idUsuario,
+            name: inputValue,
+        });
+
+        const requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+        };
+
+        fetch("http://localhost:8080/lists", requestOptions)
+            .then((response) => response.text())
+            .then(() => {
+                fetchLists();
+            })
+            .catch((error) => console.error(error));
+    };
+
+    const handleEliminarLista = (listId) => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const requestOptions = {
+            method: "DELETE",
+            redirect: "follow"
+        };
+
+        fetch(`http://localhost:8080/lists/${listId}`, requestOptions)
+            .then((response) => response.text())
+            .then(() => {
+                fetchLists();
+            })
+            .catch((error) => console.error(error));
+    }
 
     return (
         <>
@@ -35,28 +82,45 @@ function Lists() {
                     <div className="flex justify-center mt-8">
                         <div className="">
                             <ul>
-                                {listas && listas.map(lista => (
-                                    <li key={lista.id} className="list-card">
-                                        <ListCard list={lista}/>
-                                    </li>
-                                ))}
+                                {Array.isArray(listas) &&
+                                    listas.map((lista) => (
+                                        <li key={lista.id} className="list-card">
+                                            <ButtonGroup>
+                                                <ListCard list={lista}/>
+                                                <Button
+                                                    className="h-12"
+                                                    color="danger"
+                                                    isIconOnly
+                                                    onPress={() => handleEliminarLista(lista.id)}
+                                                >
+                                                    <DeleteIcon/>
+                                                </Button>
+                                            </ButtonGroup>
+                                        </li>
+                                    ))}
                             </ul>
+                            <Input
+                                className="mt-5"
+                                type="text"
+                                placeholder="Nueva lista"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                            />
+                            <Button
+                                onPress={() => handleCrearLista(user.sub)}
+                                className="mt-2"
+                            >
+                                Crear lista
+                            </Button>
+
                         </div>
                     </div>
                 </div>
-                <Footer/>
             </div>
+            <Footer/>
         </>
     );
 }
 
-Lists.propTypes = {
-    listas: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        name: PropTypes.string.isRequired,
-        description: PropTypes.string,
-        user: PropTypes.string.isRequired
-    })).isRequired
-};
 
 export default Lists;

@@ -5,14 +5,74 @@ import {
     Textarea, useDisclosure
 } from "@nextui-org/react";
 import PropTypes from "prop-types";
-import PlusIcon from "../assets/icons/PlusIcon.jsx";
+import PlusIcon from "./icons/PlusIcon.jsx";
+import {useEffect, useState} from "react";
+import {useAuth0} from "@auth0/auth0-react";
+import HeartFilledIcon from "./icons/HeartFilledIcon.jsx";
+import HeartIcon from "./icons/HeartIcon.jsx";
 
 export default function MovieHeader({datosPelicula, listas}) {
     const {onOpen: openTrailerModal, onClose: closeTrailerModal, isOpen: isTrailerModalOpen} = useDisclosure();
     const {onOpen: openCastModal, onClose: closeCastModal, isOpen: isCastModalOpen} = useDisclosure();
     const {isOpen, onOpen, onClose} = useDisclosure();
+    const {user} = useAuth0();
     const normalizedRating = Math.round(datosPelicula.vote_average / 2);
     const director = datosPelicula.crew ? datosPelicula.crew.find(member => member.roles === 'Director') : undefined;
+
+    const [like, setLike] = useState({});
+    const [isLiked, setIsLiked] = useState(false);
+    useEffect(() => {
+        if (!datosPelicula.id) {
+            return;
+        }
+        const usuario = user.sub.replace("|", "-");
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        fetch(`http://localhost:8080/likes/movie/${datosPelicula.id}/${usuario}`, requestOptions)
+            .then(response => response.json())
+            .then((data) => {
+                if (data !== null) {
+                    setIsLiked(true);
+                    setLike(data);
+                } else {
+                    setIsLiked(false);
+                }
+            })
+            .catch(error => console.error(error));
+    }, [isLiked, datosPelicula.id, user.sub]);
+    const handleLike = (idSerie) => {
+        const usuario = user.sub.replace("|", "-");
+        const requestOptions = {
+            headers: {'Content-Type': 'application/json'},
+            redirect: 'follow'
+        };
+
+        if (isLiked === false) {
+            requestOptions.method = 'POST';
+            requestOptions.body = JSON.stringify({
+                userId: usuario,
+                movieId: idSerie,
+                type: "movie"
+            });
+        } else {
+            requestOptions.method = 'DELETE';
+        }
+
+        const url = isLiked === false ? `http://localhost:8080/likes` : `http://localhost:8080/likes/${like.id}`;
+
+        fetch(url, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.text().then(text => text ? JSON.parse(text) : {})
+            })
+            .then(() => setIsLiked(!isLiked))
+            .catch(error => console.error('There was a problem with the fetch operation: ' + error.message));
+    };
 
     const handleAddToList = (listId) => {
         const myHeaders = new Headers();
@@ -42,6 +102,7 @@ export default function MovieHeader({datosPelicula, listas}) {
 
                     fetch("http://localhost:8080/itemslist", requestOptions)
                         .then((response) => response.text())
+                        .then(() => alert("Elemento añadido correctamente."))
                         .catch((error) => console.error(error));
                 } else {
                     alert("Este elemento ya está en la lista.");
@@ -70,7 +131,12 @@ export default function MovieHeader({datosPelicula, listas}) {
             </div>
             <div className="flex flex-col w-full sm:pl-16 z-10">
                 <p className="text-center text-white font-semibold sm:text-left sm:flex-row">Fecha de
-                    estreno: {datosPelicula.release_date}</p>
+                    estreno: {new Date(datosPelicula.release_date).toLocaleDateString('es-ES', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    })}
+                </p>
                 <p className="text-center text-white font-semibold sm:text-left sm:flex-row">
                     Puntuación:&nbsp;
                     {[...Array(5)].map((star, i) => {
@@ -117,6 +183,9 @@ export default function MovieHeader({datosPelicula, listas}) {
                             ))}
                         </DropdownMenu>
                     </Dropdown>
+                    <Button isIconOnly onPress={() => handleLike(datosPelicula.id)}>
+                        {isLiked ? <HeartFilledIcon/> : <HeartIcon/>}
+                    </Button>
                 </div>
             </div>
             <Modal
