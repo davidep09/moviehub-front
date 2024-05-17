@@ -37,7 +37,7 @@ export default function Serie() {
         const fetchProvidersData = fetch(`https://api.themoviedb.org/3/tv/${id}/watch/providers?`, options)
             .then(response => response.json());
 
-        const fetchCommentsData = fetch(`https://moviehub-back.onrender.com/comments/tv/${id}`)
+        const fetchCommentsData = fetch(`http://moviehub-back.onrender.com/comments/tv/${id}`)
             .then(response => response.json());
 
         Promise.all([fetchSerieData, fetchCastData, fetchProvidersData, fetchCommentsData])
@@ -88,7 +88,7 @@ export default function Serie() {
         };
 
         const idUsuario = user.sub.replace("|", "-");
-        fetch(`https://moviehub-back.onrender.com/lists/user/${idUsuario}`, requestOptions)
+        fetch(`http://moviehub-back.onrender.com/lists/user/${idUsuario}`, requestOptions)
             .then(response => response.json())
             .then(result => setListas(result))
             .catch(error => console.log('error', error));

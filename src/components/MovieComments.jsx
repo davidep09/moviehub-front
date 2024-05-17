@@ -15,7 +15,7 @@ function MovieComments({datosPelicula}) {
             redirect: "follow"
         };
 
-        fetch(`https://moviehub-back.onrender.com:8080/comments/movie/${datosPelicula.id}`, requestOptions)
+        fetch(`http://moviehub-back.onrender.com:8080/comments/movie/${datosPelicula.id}`, requestOptions)
             .then(response => response.json()
                 .then(data => setComments(data))
                 .catch(error => console.error(error)));
@@ -45,7 +45,7 @@ function MovieComments({datosPelicula}) {
             redirect: "follow"
         };
 
-        fetch("https://moviehub-back.onrender.com:8080/comments", requestOptions)
+        fetch("http://moviehub-back.onrender.com:8080/comments", requestOptions)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);

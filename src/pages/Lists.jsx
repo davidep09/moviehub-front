@@ -19,7 +19,7 @@ function Lists() {
         };
 
         const idUsuario = user.sub.replace("|", "-");
-        fetch(`https://moviehub-back.onrender.com/lists/user/${idUsuario}`, requestOptions)
+        fetch(`http://moviehub-back.onrender.com/lists/user/${idUsuario}`, requestOptions)
             .then(response => response.json())
             .then(result => setListas(result))
             .catch(error => console.log('error', error));
@@ -46,7 +46,7 @@ function Lists() {
             redirect: "follow",
         };
 
-        fetch("https://moviehub-back.onrender.com/lists", requestOptions)
+        fetch("http://moviehub-back.onrender.com/lists", requestOptions)
             .then((response) => response.text())
             .then(() => {
                 fetchLists();
@@ -63,7 +63,7 @@ function Lists() {
             redirect: "follow"
         };
 
-        fetch(`https://moviehub-back.onrender.com/lists/${listId}`, requestOptions)
+        fetch(`http://moviehub-back.onrender.com/lists/${listId}`, requestOptions)
             .then((response) => response.text())
             .then(() => {
                 fetchLists();

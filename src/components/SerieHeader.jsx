@@ -33,7 +33,7 @@ export default function SerieHeader({datosSerie, listas}) {
             redirect: "follow"
         };
 
-        fetch(`https://moviehub-back.onrender.com:8080/likes/movie/${datosSerie.id}/${usuario}`, requestOptions)
+        fetch(`http://moviehub-back.onrender.com:8080/likes/movie/${datosSerie.id}/${usuario}`, requestOptions)
             .then(response => response.json())
             .then((data) => {
                 if (data !== null) {
@@ -63,7 +63,7 @@ export default function SerieHeader({datosSerie, listas}) {
             requestOptions.method = 'DELETE';
         }
 
-        const url = isLiked === false ? `https://moviehub-back.onrender.com:8080/likes` : `https://moviehub-back.onrender.com:8080/likes/${like.id}`;
+        const url = isLiked === false ? `http://moviehub-back.onrender.com:8080/likes` : `http://moviehub-back.onrender.com:8080/likes/${like.id}`;
 
         fetch(url, requestOptions)
             .then(response => {
@@ -86,7 +86,7 @@ export default function SerieHeader({datosSerie, listas}) {
             "type": "tv"
         });
 
-        fetch(`https://moviehub-back.onrender.com:8080/itemslist/${listId}`, {
+        fetch(`http://moviehub-back.onrender.com:8080/itemslist/${listId}`, {
             method: "GET",
             headers: myHeaders,
         })
@@ -102,7 +102,7 @@ export default function SerieHeader({datosSerie, listas}) {
                         redirect: "follow"
                     };
 
-                    fetch("https://moviehub-back.onrender.com:8080/itemslist", requestOptions)
+                    fetch("http://moviehub-back.onrender.com:8080/itemslist", requestOptions)
                         .then((response) => response.text())
                         .then(() => alert("Elemento añadido correctamente."))
                         .catch((error) => console.error(error));
