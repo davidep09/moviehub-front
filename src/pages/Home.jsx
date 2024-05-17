@@ -26,7 +26,7 @@ export default function Home() {
             }
         };
 
-        fetch("http://moviehub-back.onrender.com:8080/totalLikes", requestOptions)
+        fetch("https://moviehub-back.onrender.com:8080/totalLikes", requestOptions)
             .then(response => response.json())
             .then(result => {
                 const fetches = result.map(item => {
