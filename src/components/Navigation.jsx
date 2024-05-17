@@ -84,7 +84,6 @@ export default function Navigation() {
                                 <p className="font-semibold">{user.email}</p>
                             </DropdownItem>
                             <DropdownItem key="listas" href="/lists">Mis listas</DropdownItem>
-                            <DropdownItem key="ajustes">Ajustes</DropdownItem>
                             <DropdownItem key="logout" color="danger" as={Button}
                                           onPress={logoutWithRedirect}>
                                 Cerrar sesión

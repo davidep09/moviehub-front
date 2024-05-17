@@ -100,7 +100,7 @@ export default function Movie() {
         };
 
         const idUsuario = user.sub.replace("|", "-");
-        fetch(`http://localhost:8080/lists/user/${idUsuario}`, requestOptions)
+        fetch(`https://moviehub-back.onrender.com:8080/lists/user/${idUsuario}`, requestOptions)
             .then(response => response.json())
             .then(result => setListas(result))
             .catch(error => console.log('error', error));

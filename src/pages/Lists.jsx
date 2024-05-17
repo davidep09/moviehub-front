@@ -19,7 +19,7 @@ function Lists() {
         };
 
         const idUsuario = user.sub.replace("|", "-");
-        fetch(`http://localhost:8080/lists/user/${idUsuario}`, requestOptions)
+        fetch(`https://moviehub-back.onrender.com/lists/user/${idUsuario}`, requestOptions)
             .then(response => response.json())
             .then(result => setListas(result))
             .catch(error => console.log('error', error));
@@ -36,7 +36,7 @@ function Lists() {
 
         const raw = JSON.stringify({
             userId: idUsuario,
-            name: inputValue,
+            name: inputValue ? inputValue : "Nueva lista",
         });
 
         const requestOptions = {
@@ -46,7 +46,7 @@ function Lists() {
             redirect: "follow",
         };
 
-        fetch("http://localhost:8080/lists", requestOptions)
+        fetch("https://moviehub-back.onrender.com/lists", requestOptions)
             .then((response) => response.text())
             .then(() => {
                 fetchLists();
@@ -63,7 +63,7 @@ function Lists() {
             redirect: "follow"
         };
 
-        fetch(`http://localhost:8080/lists/${listId}`, requestOptions)
+        fetch(`https://moviehub-back.onrender.com/lists/${listId}`, requestOptions)
             .then((response) => response.text())
             .then(() => {
                 fetchLists();
@@ -85,20 +85,21 @@ function Lists() {
                                 {Array.isArray(listas) &&
                                     listas.map((lista) => (
                                         <li key={lista.id} className="list-card">
-                                            <ButtonGroup>
+                                            <div className="flex flex-row">
                                                 <ListCard list={lista}/>
                                                 <Button
-                                                    className="h-12"
+                                                    className="mt-2 ml-1 h-12"
                                                     color="danger"
                                                     isIconOnly
                                                     onPress={() => handleEliminarLista(lista.id)}
                                                 >
                                                     <DeleteIcon/>
                                                 </Button>
-                                            </ButtonGroup>
+                                            </div>
                                         </li>
                                     ))}
                             </ul>
+                            <Divider/>
                             <Input
                                 className="mt-5"
                                 type="text"
