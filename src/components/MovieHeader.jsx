@@ -31,7 +31,7 @@ export default function MovieHeader({datosPelicula, listas}) {
             redirect: "follow"
         };
 
-        fetch(`http://localhost:8080/likes/movie/${datosPelicula.id}/${usuario}`, requestOptions)
+        fetch(`https://moviehub-back.onrender.com:8080/likes/movie/${datosPelicula.id}/${usuario}`, requestOptions)
             .then(response => response.json())
             .then((data) => {
                 if (data !== null) {
@@ -61,7 +61,7 @@ export default function MovieHeader({datosPelicula, listas}) {
             requestOptions.method = 'DELETE';
         }
 
-        const url = isLiked === false ? `http://localhost:8080/likes` : `http://localhost:8080/likes/${like.id}`;
+        const url = isLiked === false ? `https://moviehub-back.onrender.com:8080/likes` : `https://moviehub-back.onrender.com:8080/likes/${like.id}`;
 
         fetch(url, requestOptions)
             .then(response => {
@@ -84,7 +84,7 @@ export default function MovieHeader({datosPelicula, listas}) {
             "type": "movie"
         });
 
-        fetch(`http://localhost:8080/itemslist/${listId}`, {
+        fetch(`https://moviehub-back.onrender.com:8080/itemslist/${listId}`, {
             method: "GET",
             headers: myHeaders,
         })
@@ -100,7 +100,7 @@ export default function MovieHeader({datosPelicula, listas}) {
                         redirect: "follow"
                     };
 
-                    fetch("http://localhost:8080/itemslist", requestOptions)
+                    fetch("https://moviehub-back.onrender.com:8080/itemslist", requestOptions)
                         .then((response) => response.text())
                         .then(() => alert("Elemento añadido correctamente."))
                         .catch((error) => console.error(error));
