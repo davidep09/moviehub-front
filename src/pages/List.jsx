@@ -30,14 +30,14 @@ function List() {
             mode: "cors"
         };
 
-        fetch(`https://moviehub-back.onrender.com:8080/lists/${id}`, requestOptions)
+        fetch(`http://moviehub-back.onrender.com:8080/lists/${id}`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 setList(result);
             })
             .catch(error => console.log('error', error));
 
-        fetch(`https://moviehub-back.onrender.com:8080/itemslist/${id}`, requestOptions)
+        fetch(`http://moviehub-back.onrender.com:8080/itemslist/${id}`, requestOptions)
             .then(response => response.json())
             .then(result => {
                 setItems(Object.values(result));
@@ -58,7 +58,7 @@ function List() {
             redirect: "follow"
         };
 
-        fetch(`https://moviehub-back.onrender.com:8080/itemslist/${itemId}`, requestOptions)
+        fetch(`http://moviehub-back.onrender.com:8080/itemslist/${itemId}`, requestOptions)
             .then((response) => response.text())
             .then(() => {
                 fetchList();
