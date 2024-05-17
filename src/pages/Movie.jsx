@@ -17,6 +17,10 @@ export default function Movie() {
     const defaultImage = "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg";
 
     useEffect(() => {
+        if (!isAuthenticated) {
+            return;
+        }
+
         const options = {
             method: 'GET',
             headers: {
@@ -93,6 +97,10 @@ export default function Movie() {
     }, [id]);
 
     useEffect(() => {
+        if (!isAuthenticated) {
+            return;
+        }
+
         const requestOptions = {
             method: "GET",
             redirect: "follow",
@@ -100,13 +108,13 @@ export default function Movie() {
         };
 
         const idUsuario = user.sub.replace("|", "-");
-        fetch(`https://moviehub-back.onrender.com:8080/lists/user/${idUsuario}`, requestOptions)
+        fetch(`https://moviehub-back.onrender.com/lists/user/${idUsuario}`, requestOptions)
             .then(response => response.json())
             .then(result => setListas(result))
             .catch(error => console.log('error', error));
     }, [user.sub]);
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !isLoading) {
         return <Navigate to={"/"}/>;
     }
 
