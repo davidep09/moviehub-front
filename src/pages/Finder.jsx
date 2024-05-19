@@ -139,11 +139,11 @@ function Finder() {
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu
-                            aria-label="Selecciona una o varias plataformas"
+                            aria-label="Selecciona una plataforma"
                             variant="flat"
                             closeOnSelect={false}
                             disallowEmptySelection
-                            selectionMode="multiple"
+                            selectionMode="single"
                             selectedKeys={selectedKeysWatchProviders}
                             onSelectionChange={setSelectedKeysWatchProviders}
                         >

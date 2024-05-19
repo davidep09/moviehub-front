@@ -7,9 +7,9 @@ import TrendsCarousel from "../components/TrendsCarousel.jsx";
 import {useEffect, useState} from "react";
 
 export default function Home() {
-    const {isAuthenticated, isLoading} = useAuth0();
+    const {isAuthenticated, isLoading, user} = useAuth0();
     const [mostLiked, setMostLiked] = useState([]);
-
+    const [userLikes, setUserLikes] = useState([]);
 
     useEffect(() => {
         const requestOptions = {
@@ -26,7 +26,7 @@ export default function Home() {
             }
         };
 
-        fetch("https://moviehub-back.onrender.com/totalLikes", requestOptions)
+        fetch("https://moviehub-back.onrender.com/likes/most-liked", requestOptions)
             .then(response => response.json())
             .then(result => {
                 const fetches = result.map(item => {
@@ -43,6 +43,22 @@ export default function Home() {
             })
             .catch(error => console.log('error', error));
     }, []);
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+
+        const usuario = user.sub.replace("|", "-");
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        fetch(`https://moviehub-back.onrender.com/likes/${usuario}`, requestOptions)
+            .then((response) => response.text())
+            .then((result) => setUserLikes(JSON.parse(result)))
+            .catch((error) => console.error(error));
+    }, [user])
 
     if (isLoading) {
         return <Spinner size="large" label="Cargando.." className="m-auto"/>;
@@ -56,7 +72,7 @@ export default function Home() {
         <>
             <Navigation/>
             <Divider/>
-            <TrendsCarousel trends={mostLiked}/>
+            <TrendsCarousel trends={mostLiked} userLikes={userLikes}/>
             <Footer/>
         </>
     );

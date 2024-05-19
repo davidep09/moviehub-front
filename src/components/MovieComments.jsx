@@ -31,11 +31,15 @@ function MovieComments({datosPelicula}) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
+        let dateNow = new Date();
+        dateNow.setHours(dateNow.getHours() + 2);
+
         const raw = JSON.stringify({
             "userId": usuario,
             "movieId": datosPelicula.id,
             "type": "movie",
-            "comment": evt.target[0].value
+            "comment": evt.target[0].value,
+            "datetime": dateNow
         });
 
         const requestOptions = {
@@ -73,11 +77,15 @@ function MovieComments({datosPelicula}) {
             </div>
             {comments && comments.length > 0 ? (
                 <div className="grid grid-cols-4 gap-4 items-stretch mx-2">
-                    {comments.map((comment, index) => (
-                        <Textarea key={index} className="m-4 w-full h-full"
-                                  value={comment.comment}>
-                        </Textarea>
-                    ))}
+                    {comments.map((comment, index) => {
+                        const date = new Date(comment.datetime);
+                        const formattedDate = date.toLocaleString();
+                        return (
+                            <Textarea key={index} className="m-4 w-full h-full"
+                                      value={formattedDate + "\n" + comment.comment}>
+                            </Textarea>
+                        );
+                    })}
                 </div>
             ) : (
                 <p className="text-center my-4">Sé el primero en comentar.</p>

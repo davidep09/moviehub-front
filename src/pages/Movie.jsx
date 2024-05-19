@@ -97,10 +97,6 @@ export default function Movie() {
     }, [id]);
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            return;
-        }
-
         const requestOptions = {
             method: "GET",
             redirect: "follow",

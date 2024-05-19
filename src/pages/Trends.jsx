@@ -7,10 +7,11 @@ import {Navigate} from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
 
 export default function Trends() {
-    const {isAuthenticated} = useAuth0();
+    const {isAuthenticated, user} = useAuth0();
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
+    const [userLikes, setUserLikes] = useState([]);
 
     useEffect(() => {
         const options = {
@@ -40,6 +41,23 @@ export default function Trends() {
             })
             .catch(err => console.error(err));
     }, [page]);
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+
+        const usuario = user.sub.replace("|", "-");
+        const requestOptions = {
+            method: "GET",
+            redirect: "follow"
+        };
+
+        fetch(`https://moviehub-back.onrender.com/likes/${usuario}`, requestOptions)
+            .then((response) => response.text())
+            .then((result) => setUserLikes(JSON.parse(result)))
+            .catch((error) => console.error(error));
+    }, [user])
+
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
@@ -54,7 +72,8 @@ export default function Trends() {
             <Navigation/>
             <Divider/>
             <h1 className="text-center text-2xl my-6">Tendencias de hoy</h1>
-            <MoviesCarousel movies={movies} page={page} totalPages={totalPages} onPageChange={handlePageChange}/>
+            <MoviesCarousel movies={movies} page={page} totalPages={totalPages} onPageChange={handlePageChange}
+                            userLikes={userLikes}/>
             <Footer/>
         </>
     );

@@ -2,7 +2,7 @@ import {Card, CardBody, CardHeader, Image} from "@nextui-org/react";
 import {useNavigate} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-function MovieCard({movie}) {
+function MovieCard({movie, isFavorite}) {
     const navigate = useNavigate();
     const defaultImage = "https://motivatevalmorgan.com/wp-content/uploads/2016/06/default-movie.jpg";
     const handlerClick = () => {
@@ -24,8 +24,13 @@ function MovieCard({movie}) {
                 />
             </CardHeader>
             <CardBody className="pt-1">
-                <h4 className="pl-2 font-bold text-large overflow-hidden whitespace-nowrap">{movie.title || movie.name}</h4>
-                {movie.vote_average && <small className="pl-2 text-default-500">{movie.vote_average.toFixed(1)}</small>}
+                <h4 className="pl-2 font-bold text-large overflow-hidden whitespace-nowrap">
+                    {movie.title || movie.name}
+                </h4>
+                {movie.vote_average &&
+                    <small className="pl-2 text-default-500">{movie.vote_average.toFixed(1)}
+                        {isFavorite && <span> ❤️</span>}
+                    </small>}
                 <p className="pl-2 text-tiny uppercase font-bold">{new Date(movie.release_date || movie.first_air_date).toLocaleDateString()}</p>
             </CardBody>
         </Card>
@@ -42,7 +47,8 @@ MovieCard.propTypes = {
         vote_average: PropTypes.number,
         release_date: PropTypes.string,
         first_air_date: PropTypes.string
-    }).isRequired
+    }).isRequired,
+    isFavorite: PropTypes.bool
 };
 
 export default MovieCard;

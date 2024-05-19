@@ -1,7 +1,7 @@
 import MovieCard from "./MovieCard.jsx";
 import PropTypes from "prop-types";
 
-function TrendsCarousel({trends}) {
+function TrendsCarousel({trends, userLikes}) {
     if (!Array.isArray(trends)) {
         return <p>Las tendencias no están disponibles</p>;
     }
@@ -10,18 +10,22 @@ function TrendsCarousel({trends}) {
         <>
             <h2 className="text-center text-2xl my-6">Lo más gustado de MovieHub</h2>
             <div className="flex flex-col sm:flex-row flex-wrap">
-                {trends && trends.map((trend, index) => (
-                    <div key={index} className="w-full sm:w-1/5 p-4">
-                        <MovieCard movie={trend}/>
-                    </div>
-                ))}
+                {trends && trends.map((trend, index) => {
+                    const isFavorite = userLikes.some(like => like.movieId === trend.id && like.type === trend.media_type);
+                    return (
+                        <div key={index} className="w-full sm:w-1/5 p-4">
+                            <MovieCard movie={trend} isFavorite={isFavorite}/>
+                        </div>
+                    );
+                })}
             </div>
         </>
     )
 }
 
 TrendsCarousel.propTypes = {
-    trends: PropTypes.array.isRequired
+    trends: PropTypes.array,
+    userLikes: PropTypes.array
 }
 
 export default TrendsCarousel;
