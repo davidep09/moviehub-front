@@ -3,11 +3,12 @@ import Navigation from "../components/Navigation.jsx";
 import MoviesCarousel from "../components/MoviesCarousel.jsx";
 import {Divider} from "@nextui-org/react";
 import Footer from "../components/Footer.jsx";
-import {Navigate} from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
+import {useNavigate} from "react-router-dom";
 
 export default function Trends() {
     const {isAuthenticated, user} = useAuth0();
+    const {navigate} = useNavigate();
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
@@ -64,7 +65,7 @@ export default function Trends() {
     };
 
     if (!isAuthenticated) {
-        return <Navigate to={"/"}/>;
+        navigate("/");
     }
 
     return (

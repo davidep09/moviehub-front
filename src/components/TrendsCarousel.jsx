@@ -13,7 +13,7 @@ function TrendsCarousel({trends, userLikes}) {
                 {trends && trends.map((trend, index) => {
                     const isFavorite = userLikes.some(like => like.movieId === trend.id && like.type === trend.media_type);
                     return (
-                        <div key={index} className="w-full sm:w-1/5 p-4">
+                        <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2">
                             <MovieCard movie={trend} isFavorite={isFavorite}/>
                         </div>
                     );

@@ -9,7 +9,7 @@ function MoviesCarousel({movies, page, totalPages, onPageChange, userLikes}) {
                 {movies && movies.map((movie, index) => {
                     const isFavorite = userLikes.some(like => like.movieId === movie.id && like.type === movie.media_type);
                     return (
-                        <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/5 p-4">
+                        <div key={index} className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-2">
                             <MovieCard movie={movie} isFavorite={isFavorite}/>
                         </div>
                     );

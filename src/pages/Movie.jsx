@@ -4,12 +4,13 @@ import {Divider, Spinner} from "@nextui-org/react";
 import MovieHeader from "../components/MovieHeader.jsx";
 import MovieProvider from "../components/MovieProvider.jsx";
 import {useEffect, useState} from "react";
-import {Navigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
 import MovieComments from "../components/MovieComments.jsx";
 
 export default function Movie() {
     const {isAuthenticated, user} = useAuth0();
+    const navigate = useNavigate();
     const {id} = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [datosPelicula, setDatosPelicula] = useState([]);
@@ -111,7 +112,7 @@ export default function Movie() {
     }, [user.sub]);
 
     if (!isAuthenticated && !isLoading) {
-        return <Navigate to={"/"}/>;
+        navigate("/");
     }
 
     if (isLoading) {

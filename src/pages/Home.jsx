@@ -2,12 +2,13 @@ import {useAuth0} from '@auth0/auth0-react';
 import Navigation from "../components/Navigation.jsx";
 import {Divider, Spinner} from "@nextui-org/react";
 import Footer from "../components/Footer.jsx";
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import TrendsCarousel from "../components/TrendsCarousel.jsx";
 import {useEffect, useState} from "react";
 
 export default function Home() {
     const {isAuthenticated, isLoading, user} = useAuth0();
+    const {navigate} = useNavigate();
     const [mostLiked, setMostLiked] = useState([]);
     const [userLikes, setUserLikes] = useState([]);
 
@@ -65,7 +66,7 @@ export default function Home() {
     }
 
     if (!isAuthenticated && !isLoading) {
-        return <Navigate to="/"/>;
+        navigate("/");
     }
 
     return (

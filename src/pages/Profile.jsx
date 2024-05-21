@@ -4,10 +4,11 @@ import Navigation from "../components/Navigation.jsx";
 import {Divider} from "@nextui-org/react";
 import Footer from "../components/Footer.jsx";
 import FormProfile from "../components/FormProfile.jsx";
-import {Navigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 function Profile() {
     const {user, isAuthenticated} = useAuth0();
+    const {navigate} = useNavigate();
     const [id, setId] = useState();
     const [userProfile, setUserProfile] = useState();
 
@@ -40,7 +41,7 @@ function Profile() {
     }, [id]);
 
     if (!isAuthenticated) {
-        return <Navigate to="/"/>;
+        navigate("/");
     }
 
     return (

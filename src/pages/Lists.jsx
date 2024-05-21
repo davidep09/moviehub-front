@@ -1,13 +1,15 @@
 import Navigation from "../components/Navigation.jsx";
 import Footer from "../components/Footer.jsx";
-import {Button, ButtonGroup, Divider, Input} from "@nextui-org/react";
+import {Button, Divider, Input} from "@nextui-org/react";
 import {useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import ListCard from "../components/ListCard.jsx";
 import DeleteIcon from "../components/icons/DeleteIcon.jsx";
+import {useNavigate} from "react-router-dom";
 
 function Lists() {
-    const {user} = useAuth0();
+    const {user, isAuthenticated} = useAuth0();
+    const {navigate} = useNavigate();
     const [listas, setListas] = useState([]);
     const [inputValue, setInputValue] = useState("");
 
@@ -69,6 +71,10 @@ function Lists() {
                 fetchLists();
             })
             .catch((error) => console.error(error));
+    }
+
+    if (!isAuthenticated) {
+        navigate("/");
     }
 
     return (
