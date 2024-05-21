@@ -154,7 +154,7 @@ export default function MovieHeader({datosPelicula, listas}) {
                 <p className="text-center text-white font-semibold sm:text-left sm:flex-row mt-4">Director: <strong
                     className="font-normal">{director ? director.name : 'No disponible'}</strong>
                 </p>
-                <div>
+                <div className="flex flex-row">
                     <Button className="mt-4 mr-2 max-w-32" onPress={openCastModal}>
                         Reparto
                     </Button>
@@ -176,14 +176,14 @@ export default function MovieHeader({datosPelicula, listas}) {
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu isOpen={isOpen} onClose={onClose}>
-                            {listas.map((lista, index) => (
+                            {listas && listas.map((lista, index) => (
                                 <DropdownItem key={index} onPress={() => handleAddToList(lista.id)}>
                                     {lista.name}
                                 </DropdownItem>
                             ))}
                         </DropdownMenu>
                     </Dropdown>
-                    <Button isIconOnly onPress={() => handleLike(datosPelicula.id)}>
+                    <Button className="mt-4 max-w-32" isIconOnly onPress={() => handleLike(datosPelicula.id)}>
                         {isLiked ? <HeartFilledIcon/> : <HeartIcon/>}
                     </Button>
                 </div>

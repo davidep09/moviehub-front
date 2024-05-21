@@ -159,14 +159,14 @@ export default function SerieHeader({datosSerie, listas}) {
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu>
-                            {listas.map((lista, index) => (
+                            {listas && listas.map((lista, index) => (
                                 <DropdownItem key={index} onPress={() => handleAddToList(lista.id)}>
                                     {lista.name}
                                 </DropdownItem>
                             ))}
                         </DropdownMenu>
                     </Dropdown>
-                    <Button className="mt-4 max-w-32 mx-2" isIconOnly onPress={() => handleLike(datosSerie.id)}>
+                    <Button className="mt-4 max-w-32" isIconOnly onPress={() => handleLike(datosSerie.id)}>
                         {isLiked ? <HeartFilledIcon/> : <HeartIcon/>}
                     </Button>
                 </div>

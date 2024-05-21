@@ -15,6 +15,16 @@ function Finder() {
 
     const [searchTerm, setSearchTerm] = useState('');
 
+    const types = {
+        'movie': 'Películas',
+        'tv': 'Series'
+    }
+    const [selectedKeysType, setSelectedKeysType] = useState(new Set([]));
+    useMemo(
+        () => Array.from(selectedKeysType).join(", ").replaceAll("_", " "),
+        [selectedKeysType]
+    );
+
     const genres = {
         10759: "Acción & Aventura",
         16: "Animación",
@@ -71,7 +81,7 @@ function Finder() {
     );
 
     const handleClickBuscarPorFiltros = () => {
-        navigate(`/search?sortBy=${Array.from(selectedKeysSortBy)}&genre=${Array.from(selectedKeysGenre).join(",")}&watchProviders=${Array.from(selectedKeysWatchProviders).join(",")}`);
+        navigate(`/search?sortBy=${Array.from(selectedKeysSortBy)}&type=${Array.from(selectedKeysType)}&genre=${Array.from(selectedKeysGenre).join(",")}&watchProviders=${Array.from(selectedKeysWatchProviders).join(",")}`);
     };
 
     const handleClickBuscarPorPalabra = () => {
@@ -92,13 +102,42 @@ function Finder() {
                        onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <Button onClick={handleClickBuscarPorPalabra} className="ml-2" variant="flat" color="primary"
-                        isIconOnly>
+                        isIconOnly isDisabled={searchTerm === ''}>
                     <SearchIcon/>
                 </Button>
             </div>
             <Divider className="w-[70%] mx-auto"/>
             <h2 className="text-center text-2xl my-6">Buscar por filtros</h2>
             <div className="flex w-1/2 m-auto my-6 justify-center">
+                <div className="mx-1">
+                    <Dropdown>
+                        <DropdownTrigger>
+                            <Button
+                                variant="flat"
+                                className="capitalize"
+                                color="default"
+                            >
+                                Tipo
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            aria-label="Selecciona un tipo"
+                            variant="flat"
+                            closeOnSelect={false}
+                            disallowEmptySelection
+                            selectionMode="single"
+                            selectedKeys={selectedKeysType}
+                            onSelectionChange={setSelectedKeysType}
+                            required
+                        >
+                            {Object.keys(types).map((key) => (
+                                <DropdownItem key={key} eventKey={key}>
+                                    {types[key]}
+                                </DropdownItem>
+                            ))}
+                        </DropdownMenu>
+                    </Dropdown>
+                </div>
                 <div className="mx-1">
                     <Dropdown>
                         <DropdownTrigger>
@@ -139,11 +178,11 @@ function Finder() {
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu
-                            aria-label="Selecciona una o varias plataformas"
+                            aria-label="Selecciona una plataforma"
                             variant="flat"
                             closeOnSelect={false}
                             disallowEmptySelection
-                            selectionMode="multiple"
+                            selectionMode="single"
                             selectedKeys={selectedKeysWatchProviders}
                             onSelectionChange={setSelectedKeysWatchProviders}
                         >
@@ -184,7 +223,7 @@ function Finder() {
                     </Dropdown>
                 </div>
                 <Button onClick={handleClickBuscarPorFiltros} className="ml-2" variant="flat" color="primary"
-                        isIconOnly>
+                        isIconOnly isDisabled={selectedKeysType.size === 0}>
                     <SearchIcon/>
                 </Button>
             </div>

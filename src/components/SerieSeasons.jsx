@@ -22,7 +22,7 @@ export default function SerieSeasons({seasons}) {
     const [selectedSeason, setSelectedSeason] = useState(null);
 
     const handleOpenModal = (season) => {
-        setSelectedSeason(season);
+        console.log(season);
         const options = {
             method: 'GET',
             headers: {
@@ -31,10 +31,10 @@ export default function SerieSeasons({seasons}) {
             }
         };
 
-        fetch(`https://api.themoviedb.org/3/tv/${id}/season/${selectedSeason}?language=es-ES`, options)
+        fetch(`https://api.themoviedb.org/3/tv/${id}/season/${season}?language=es-ES`, options)
             .then(response => response.json())
             .then(response => {
-                season.episodes = response.episodes;
+                setSelectedSeason(response);
                 onOpen();
             })
             .catch(err => console.error(err));
@@ -58,7 +58,7 @@ export default function SerieSeasons({seasons}) {
                                     <Textarea className="mt-2" label="Sinopsis" isReadOnly
                                               value={season.overview ? season.overview : "No hay sinopsis disponible"}/>
                                     <div className="flex justify-center w-full">
-                                        <Button className="mt-2 w-1/2" auto onClick={() => handleOpenModal(season)}>Ver
+                                        <Button className="mt-2 w-1/2" auto onClick={() => handleOpenModal(index)}>Ver
                                             episodios</Button>
                                     </div>
                                 </div>
