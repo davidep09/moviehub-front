@@ -42,7 +42,7 @@ function Search() {
         337: "Disney Plus",
         119: "Amazon Prime Video",
         8: "Netflix",
-        384: "HBO Max",
+        1899: "Max",
         2: "Apple TV",
         63: "Filmin",
         1773: "SkyShowtime",
@@ -74,6 +74,7 @@ function Search() {
             fetch(`https://api.themoviedb.org/3/search/multi?language=es-ES&query=${term}&page=${page}&include_adult=false`, options)
                 .then(res => res.json())
                 .then(data => {
+                    
                     setMoviesResults(data.results);
                     setTotalPages(data.total_pages);
                 });
@@ -120,7 +121,11 @@ function Search() {
                 fetch(url, options)
                     .then(res => res.json())
                     .then(data => {
-                        setMoviesResults(data.results);
+                        const resultsWithMediaType = data.results.map(result => ({
+                            ...result,
+                            media_type: type
+                        }));
+                        setMoviesResults(resultsWithMediaType);
                         setTotalPages(data.total_pages);
                     });
             } else if (type === 'tv') {
@@ -162,7 +167,11 @@ function Search() {
                 fetch(url, options)
                     .then(res => res.json())
                     .then(data => {
-                        setMoviesResults(data.results);
+                        const resultsWithMediaType = data.results.map(result => ({
+                            ...result,
+                            media_type: type
+                        }));
+                        setMoviesResults(resultsWithMediaType);
                         setTotalPages(data.total_pages);
                     });
             }
@@ -203,21 +212,23 @@ function Search() {
                     </Button>
                 </p>
                 <h2 className="text-center text-2xl mt-2">Búsqueda</h2>
-                <h3 className="text-center text-xl">{term && `Resultados para: ${term}`}</h3>
-                <h3 className="text-center text-xl">
-                    {type && type === 'movie' && <Chip key="'movie" variant="flat" color="success">Películas</Chip>}
-                    {type && type === 'tv' && <Chip key="'movie" variant="flat" color="success">Series</Chip>}
-                    {genre && genre.split(',').map((genreId) => (
-                        <Chip key={genreId} variant="flat" color="primary" className="m-1">{genresConst[genreId]}</Chip>
-                    ))}
-                    {watchProviders && watchProviders.split(',').map((providerId) => (
-                        <Chip key={providerId} variant="flat" color="danger"
-                              className="m-1">{watchProvidersConst[providerId]}</Chip>
-                    ))}
-                    {sortBy.length !== 0 ?
-                        <Chip className="m-1" variant="flat" color="default">{sortByConst[sortBy]}</Chip> :
-                        <Chip className="m-1" variant="flat" color="default">Popularidad</Chip>}
-                </h3>
+                {term ? <h3 className="text-center text-xl">{`Resultados para: ${term}`}</h3> :
+                    <h3 className="text-center text-xl">
+                        {type && type === 'movie' && <Chip key="'movie" variant="flat" color="success">Películas</Chip>}
+                        {type && type === 'tv' && <Chip key="'movie" variant="flat" color="success">Series</Chip>}
+                        {genre && genre.split(',').map((genreId) => (
+                            <Chip key={genreId} variant="flat" color="primary"
+                                  className="m-1">{genresConst[genreId]}</Chip>
+                        ))}
+                        {watchProviders && watchProviders.split(',').map((providerId) => (
+                            <Chip key={providerId} variant="flat" color="danger"
+                                  className="m-1">{watchProvidersConst[providerId]}</Chip>
+                        ))}
+                        {sortBy.length !== 0 ?
+                            <Chip className="m-1" variant="flat" color="default">{sortByConst[sortBy]}</Chip> :
+                            <Chip className="m-1" variant="flat" color="default">Popularidad</Chip>}
+                    </h3>
+                }
                 <SearchCarousel movies={moviesResults} page={page} totalPages={totalPages}
                                 onPageChange={handlePageChange} userLikes={userLikes}/>
             </div>
