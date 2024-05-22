@@ -18,6 +18,7 @@ export default function Serie() {
     const defaultImage = "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg";
 
     useEffect(() => {
+        if (!isAuthenticated) return;
         if (!id) return;
 
         const options = {
@@ -81,6 +82,8 @@ export default function Serie() {
     }, [id]);
 
     useEffect(() => {
+        if (!user) return;
+
         const requestOptions = {
             method: "GET",
             redirect: "follow",

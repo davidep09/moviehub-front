@@ -60,6 +60,8 @@ function Search() {
 
 
     useEffect(() => {
+        if (!isAuthenticated) return;
+
         const options = {
             method: 'GET',
             headers: {
@@ -168,9 +170,7 @@ function Search() {
 
     }, [genre, location.search, page, term, watchProviders, sortBy]);
     useEffect(() => {
-        if (!user) {
-            return;
-        }
+        if (!user) return;
 
         const usuario = user.sub.replace("|", "-");
         const requestOptions = {

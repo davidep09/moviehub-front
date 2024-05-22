@@ -14,6 +14,7 @@ function List() {
     const [items, setItems] = useState([]);
     const [tmdbItems, setTmdbItems] = useState([]);
     useEffect(() => {
+        if (!isAuthenticated) return;
         fetchList();
     }, [id]);
 
@@ -85,7 +86,7 @@ function List() {
                         ) : (tmdbItems.map((item, index) => (
                             <div key={index} className="w-full sm:w-1/2 lg:w-1/4 p-2">
                                 <Button
-                                    className="relative top-6 left-72 z-10"
+                                    className="float-end relative top-3 z-10"
                                     size="sm"
                                     variant="solid"
                                     color="danger"

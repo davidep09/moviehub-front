@@ -27,8 +27,9 @@ function Lists() {
     }
 
     useEffect(() => {
+        if (!isAuthenticated) return;
         fetchLists()
-    }, []);
+    }, [fetchLists]);
 
     const handleCrearLista = (id) => {
         const idUsuario = id.replace("|", "-");
