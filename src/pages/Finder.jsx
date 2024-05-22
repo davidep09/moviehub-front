@@ -50,7 +50,7 @@ function Finder() {
         337: "Disney Plus",
         119: "Amazon Prime Video",
         8: "Netflix",
-        384: "HBO Max",
+        1899: "Max",
         2: "Apple TV",
         63: "Filmin",
         1773: "SkyShowtime",
