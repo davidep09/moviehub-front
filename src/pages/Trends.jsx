@@ -10,7 +10,7 @@ export default function Trends() {
     const {isAuthenticated, user, isLoading} = useAuth0();
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState([]);
+    const [totalPages, setTotalPages] = useState(0);
     const [userLikes, setUserLikes] = useState([]);
 
     useEffect(() => {

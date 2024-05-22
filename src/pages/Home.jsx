@@ -14,8 +14,7 @@ export default function Home() {
     useEffect(() => {
         const requestOptions = {
             method: "GET",
-            redirect: "follow",
-            mode: "cors"
+            redirect: "follow"
         };
 
         const options = {
@@ -26,12 +25,12 @@ export default function Home() {
             }
         };
 
-        fetch("https://moviehub-back.onrender.com/totalLikes", requestOptions)
+        fetch("https://moviehub-back.onrender.com/likes/top5", requestOptions)
             .then(response => response.json())
             .then(result => {
                 const fetches = result.map(item => {
-                    const type = item.type === 'movie' ? 'movie' : 'tv';
-                    return fetch(`https://api.themoviedb.org/3/${type}/${item.id}?language=es-ES`, options)
+                    const type = item[1] === 'movie' ? 'movie' : 'tv';
+                    return fetch(`https://api.themoviedb.org/3/${type}/${item[0]}?language=es-ES`, options)
                         .then(response => response.json())
                         .then(data => ({...data, media_type: type}));
                 });

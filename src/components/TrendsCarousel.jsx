@@ -9,7 +9,7 @@ function TrendsCarousel({trends, userLikes}) {
     return (
         <>
             <h2 className="text-center text-2xl my-6">Lo más gustado de MovieHub</h2>
-            <div className="flex flex-col sm:flex-row flex-wrap">
+            <div className="flex flex-col sm:flex-row flex-wrap mx-2">
                 {trends && trends.map((trend, index) => {
                     const isFavorite = userLikes.some(like => like.movieId === trend.id && like.type === trend.media_type);
                     return (
