@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useLocation, useNavigate} from 'react-router-dom';
+import {Navigate, useLocation, useNavigate} from 'react-router-dom';
 import Navigation from "../components/Navigation.jsx";
 import {Button, Chip, Divider} from "@nextui-org/react";
 import Footer from "../components/Footer.jsx";
@@ -7,7 +7,7 @@ import {useAuth0} from "@auth0/auth0-react";
 import SearchCarousel from "../components/SearchCarousel.jsx";
 
 function Search() {
-    const {isAuthenticated, user} = useAuth0();
+    const {isAuthenticated, user, isLoading} = useAuth0();
     const navigate = useNavigate();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -184,8 +184,8 @@ function Search() {
         setPage(newPage);
     };
 
-    if (!isAuthenticated) {
-        navigate("/");
+    if (!isAuthenticated && !isLoading) {
+        return <Navigate to={"/"}/>;
     }
 
     return (

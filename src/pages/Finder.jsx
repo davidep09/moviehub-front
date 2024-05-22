@@ -1,7 +1,7 @@
 import {Button, Divider, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input} from "@nextui-org/react";
 import SearchIcon from "../components/icons/SearchIcon.jsx";
 import {useMemo, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import Navigation from "../components/Navigation.jsx";
 import {useAuth0} from "@auth0/auth0-react";
 import Footer from "../components/Footer.jsx";
@@ -9,9 +9,6 @@ import Footer from "../components/Footer.jsx";
 function Finder() {
     const {isAuthenticated, isLoading} = useAuth0();
     const navigate = useNavigate();
-    if (!isAuthenticated && !isLoading) {
-        navigate("/");
-    }
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -86,6 +83,10 @@ function Finder() {
 
     const handleClickBuscarPorPalabra = () => {
         navigate(`/search?term=${searchTerm}`);
+    }
+
+    if (!isAuthenticated && !isLoading) {
+        return <Navigate to={"/"}/>;
     }
 
     return (

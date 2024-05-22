@@ -1,4 +1,4 @@
-import {NextUIProvider} from "@nextui-org/react";
+import {NextUIProvider, Spinner} from "@nextui-org/react";
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import Index from './pages/Index.jsx';
 import Home from './pages/Home';
@@ -10,9 +10,18 @@ import Search from "./pages/Search.jsx";
 import Finder from "./pages/Finder.jsx";
 import Lists from "./pages/Lists.jsx";
 import List from "./pages/List.jsx";
+import useAuth from "./assets/useAuth.jsx";
+import {useAuth0} from "@auth0/auth0-react";
 
 function App() {
     const navigate = useNavigate();
+    const {isUserLoaded} = useAuth();
+    const {isLoading} = useAuth0();
+
+    if (!isUserLoaded && isLoading && window.location.pathname !== "/") {
+        return <Spinner size="large" label="Cargando.." className="m-auto"/>;
+    }
+
     return (
         <NextUIProvider navigate={navigate}>
             <Routes>

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
 import {Divider, Spinner} from "@nextui-org/react";
 import Navigation from "../components/Navigation.jsx";
 import SerieHeader from "../components/SerieHeader.jsx";
@@ -11,7 +11,6 @@ import SerieComments from "../components/SerieComments.jsx";
 
 export default function Serie() {
     const {isAuthenticated, user} = useAuth0();
-    const {navigate} = useNavigate();
     const {id} = useParams();
     const [isLoading, setIsLoading] = useState(true);
     const [datosSerie, setDatosSerie] = useState([]);
@@ -95,8 +94,8 @@ export default function Serie() {
             .catch(error => console.log('error', error));
     }, [user.sub]);
 
-    if (!isAuthenticated) {
-        navigate("/");
+    if (!isAuthenticated && !isLoading) {
+        return <Navigate to={"/"}/>;
     }
 
     if (isLoading) {
