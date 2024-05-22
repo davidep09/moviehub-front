@@ -125,7 +125,7 @@ function Search() {
                 let url = 'https://api.themoviedb.org/3/discover/tv?language=es-ES';
                 url += `&page=${page}&include_adult=false`;
 
-                url += '&release_date.lte=' + currentDate;
+                url += '&air_date.lte=' + currentDate;
 
 
                 let sortBySerie = '';
@@ -136,10 +136,14 @@ function Search() {
                     case 'primary_release_date.asc':
                         sortBySerie = 'first_air_date.asc';
                         break;
+                    case 'title.desc':
+                        sortBySerie = 'original_name.desc';
+                        break;
                     default:
                         sortBySerie = sortBy;
                         break;
                 }
+
 
                 if (sortBy) {
                     url += `&sort_by=${sortBySerie}`;
@@ -210,7 +214,9 @@ function Search() {
                         <Chip key={providerId} variant="flat" color="danger"
                               className="m-1">{watchProvidersConst[providerId]}</Chip>
                     ))}
-                    {sortBy && <Chip className="m-1" variant="flat" color="default">{sortByConst[sortBy]}</Chip>}
+                    {sortBy.length !== 0 ?
+                        <Chip className="m-1" variant="flat" color="default">{sortByConst[sortBy]}</Chip> :
+                        <Chip className="m-1" variant="flat" color="default">Popularidad</Chip>}
                 </h3>
                 <SearchCarousel movies={moviesResults} page={page} totalPages={totalPages}
                                 onPageChange={handlePageChange} userLikes={userLikes}/>

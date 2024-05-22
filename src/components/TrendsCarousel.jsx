@@ -2,10 +2,6 @@ import MovieCard from "./MovieCard.jsx";
 import PropTypes from "prop-types";
 
 function TrendsCarousel({trends, userLikes}) {
-    if (!Array.isArray(trends)) {
-        return <p>Las tendencias no están disponibles</p>;
-    }
-
     return (
         <>
             <h2 className="text-center text-2xl my-6">Lo más gustado de MovieHub</h2>
