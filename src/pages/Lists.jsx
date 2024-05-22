@@ -5,11 +5,10 @@ import {useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
 import ListCard from "../components/ListCard.jsx";
 import DeleteIcon from "../components/icons/DeleteIcon.jsx";
-import {useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
 function Lists() {
-    const {user, isAuthenticated} = useAuth0();
-    const {navigate} = useNavigate();
+    const {user, isAuthenticated, isLoading} = useAuth0();
     const [listas, setListas] = useState([]);
     const [inputValue, setInputValue] = useState("");
 
@@ -73,8 +72,8 @@ function Lists() {
             .catch((error) => console.error(error));
     }
 
-    if (!isAuthenticated) {
-        navigate("/");
+    if (!isAuthenticated && !isLoading) {
+        return <Navigate to={"/"}/>;
     }
 
     return (

@@ -1,4 +1,4 @@
-import {useNavigate, useParams} from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
 import Navigation from "../components/Navigation.jsx";
 import {Button, Divider} from "@nextui-org/react";
 import {useEffect, useState} from "react";
@@ -8,8 +8,7 @@ import DeleteIcon from "../components/icons/DeleteIcon.jsx";
 import {useAuth0} from "@auth0/auth0-react";
 
 function List() {
-    const {isAuthenticated} = useAuth0();
-    const {navigate} = useNavigate();
+    const {isAuthenticated, isLoading} = useAuth0();
     const {id} = useParams();
     const [list, setList] = useState({});
     const [items, setItems] = useState([]);
@@ -69,8 +68,8 @@ function List() {
             .catch((error) => console.error(error));
     };
 
-    if (!isAuthenticated) {
-        navigate("/");
+    if (!isAuthenticated && !isLoading) {
+        return <Navigate to={"/"}/>;
     }
 
     return (

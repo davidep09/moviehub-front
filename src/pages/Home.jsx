@@ -1,22 +1,20 @@
 import {useAuth0} from '@auth0/auth0-react';
 import Navigation from "../components/Navigation.jsx";
-import {Divider, Spinner} from "@nextui-org/react";
+import {Divider} from "@nextui-org/react";
 import Footer from "../components/Footer.jsx";
-import {useNavigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import TrendsCarousel from "../components/TrendsCarousel.jsx";
 import {useEffect, useState} from "react";
 
 export default function Home() {
     const {isAuthenticated, isLoading, user} = useAuth0();
-    const {navigate} = useNavigate();
     const [mostLiked, setMostLiked] = useState([]);
     const [userLikes, setUserLikes] = useState([]);
 
     useEffect(() => {
         const requestOptions = {
             method: "GET",
-            redirect: "follow",
-            mode: "cors"
+            redirect: "follow"
         };
 
         const options = {
@@ -27,12 +25,12 @@ export default function Home() {
             }
         };
 
-        fetch("https://moviehub-back.onrender.com/likes/most-liked", requestOptions)
+        fetch("https://moviehub-back.onrender.com/likes/top5", requestOptions)
             .then(response => response.json())
             .then(result => {
                 const fetches = result.map(item => {
-                    const type = item.type === 'movie' ? 'movie' : 'tv';
-                    return fetch(`https://api.themoviedb.org/3/${type}/${item.id}?language=es-ES`, options)
+                    const type = item[1] === 'movie' ? 'movie' : 'tv';
+                    return fetch(`https://api.themoviedb.org/3/${type}/${item[0]}?language=es-ES`, options)
                         .then(response => response.json())
                         .then(data => ({...data, media_type: type}));
                 });
@@ -61,12 +59,9 @@ export default function Home() {
             .catch((error) => console.error(error));
     }, [user])
 
-    if (isLoading) {
-        return <Spinner size="large" label="Cargando.." className="m-auto"/>;
-    }
 
     if (!isAuthenticated && !isLoading) {
-        navigate("/");
+        return <Navigate to={"/"}/>;
     }
 
     return (
