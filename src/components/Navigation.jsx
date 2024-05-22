@@ -79,7 +79,7 @@ export default function Navigation() {
                             />
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Acciones" variant="flat">
-                            <DropdownItem key="profile" className="h-14 gap-2" href="/profile">
+                            <DropdownItem key="profile" className="h-14 gap-2">
                                 <p className="font-semibold">Sesión iniciada como:</p>
                                 <p className="font-semibold">{user.email}</p>
                             </DropdownItem>

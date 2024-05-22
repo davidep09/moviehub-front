@@ -68,7 +68,9 @@ export default function Home() {
         <>
             <Navigation/>
             <Divider/>
-            <TrendsCarousel trends={mostLiked} userLikes={userLikes}/>
+            <div className="mx-4 mb-4">
+                <TrendsCarousel trends={mostLiked} userLikes={userLikes}/>
+            </div>
             <Footer/>
         </>
     );
