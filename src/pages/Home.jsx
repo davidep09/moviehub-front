@@ -12,6 +12,8 @@ export default function Home() {
     const [userLikes, setUserLikes] = useState([]);
 
     useEffect(() => {
+        if (!isAuthenticated) return;
+
         const requestOptions = {
             method: "GET",
             redirect: "follow"
@@ -43,9 +45,7 @@ export default function Home() {
             .catch(error => console.log('error', error));
     }, []);
     useEffect(() => {
-        if (!user) {
-            return;
-        }
+        if (!user) return;
 
         const usuario = user.sub.replace("|", "-");
         const requestOptions = {

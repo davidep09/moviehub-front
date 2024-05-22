@@ -14,6 +14,8 @@ export default function Trends() {
     const [userLikes, setUserLikes] = useState([]);
 
     useEffect(() => {
+        if (!isAuthenticated) return;
+
         const options = {
             method: 'GET',
             headers: {
@@ -42,9 +44,7 @@ export default function Trends() {
             .catch(err => console.error(err));
     }, [page]);
     useEffect(() => {
-        if (!user) {
-            return;
-        }
+        if (!user) return;
 
         const usuario = user.sub.replace("|", "-");
         const requestOptions = {

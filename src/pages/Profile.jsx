@@ -12,15 +12,15 @@ function Profile() {
     const [userProfile, setUserProfile] = useState();
 
     useEffect(() => {
+        if (!isAuthenticated) return;
+
         if (user) {
             setId(user.sub);
         }
     }, [user]);
 
     useEffect(() => {
-        if (!id) {
-            return;
-        }
+        if (!id) return;
 
         const myHeaders = new Headers();
         myHeaders.append("Accept", "application/json");

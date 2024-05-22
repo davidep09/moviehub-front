@@ -17,9 +17,8 @@ export default function Movie() {
     const defaultImage = "https://www.shutterstock.com/image-vector/blank-avatar-photo-place-holder-600nw-1095249842.jpg";
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            return;
-        }
+        if (!isAuthenticated) return;
+
 
         const options = {
             method: 'GET',
@@ -97,6 +96,8 @@ export default function Movie() {
     }, [id]);
 
     useEffect(() => {
+        if (!isAuthenticated) return;
+        
         const requestOptions = {
             method: "GET",
             redirect: "follow",

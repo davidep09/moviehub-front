@@ -12,6 +12,7 @@ import Lists from "./pages/Lists.jsx";
 import List from "./pages/List.jsx";
 import useAuth from "./assets/useAuth.jsx";
 import {useAuth0} from "@auth0/auth0-react";
+import Error from "./pages/Error.jsx";
 
 function App() {
     const navigate = useNavigate();
@@ -35,6 +36,7 @@ function App() {
                 <Route path="/finder" element={<Finder/>}/>
                 <Route path="/lists" element={<Lists/>}/>
                 <Route path="/list/:id" element={<List/>}/>
+                <Route path={"*"} element={<Error/>}/>
             </Routes>
         </NextUIProvider>
 
