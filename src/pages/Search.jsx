@@ -164,8 +164,6 @@ function Search() {
                         setTotalPages(data.total_pages);
                     });
             }
-
-            console.log(sortBy);
         }
 
     }, [genre, location.search, page, term, watchProviders, sortBy]);
