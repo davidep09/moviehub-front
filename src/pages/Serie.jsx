@@ -4,7 +4,6 @@ import {Divider, Spinner} from "@nextui-org/react";
 import Navigation from "../components/Navigation.jsx";
 import SerieHeader from "../components/SerieHeader.jsx";
 import SerieSeasons from "../components/SerieSeasons.jsx";
-import Footer from "../components/Footer.jsx";
 import {useAuth0} from "@auth0/auth0-react";
 import SerieProvider from "../components/SerieProvider.jsx";
 import SerieComments from "../components/SerieComments.jsx";
@@ -113,7 +112,6 @@ export default function Serie() {
             <SerieSeasons seasons={datosSerie.seasons}/>
             <SerieProvider datosSerie={datosSerie}/>
             <SerieComments datosSerie={datosSerie}/>
-            <Footer/>
         </>
     );
 }

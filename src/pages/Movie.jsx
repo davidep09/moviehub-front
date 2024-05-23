@@ -1,4 +1,3 @@
-import Footer from "../components/Footer.jsx";
 import Navigation from "../components/Navigation.jsx";
 import {Divider, Spinner} from "@nextui-org/react";
 import MovieHeader from "../components/MovieHeader.jsx";
@@ -97,7 +96,7 @@ export default function Movie() {
 
     useEffect(() => {
         if (!isAuthenticated) return;
-        
+
         const requestOptions = {
             method: "GET",
             redirect: "follow",
@@ -127,7 +126,6 @@ export default function Movie() {
             <MovieProvider datosPelicula={datosPelicula}/>
             <MovieComments datosPelicula={datosPelicula}/>
             <Divider/>
-            <Footer/>
         </>
     );
 }

@@ -4,7 +4,6 @@ import {useMemo, useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 import Navigation from "../components/Navigation.jsx";
 import {useAuth0} from "@auth0/auth0-react";
-import Footer from "../components/Footer.jsx";
 
 function Finder() {
     const {isAuthenticated, isLoading} = useAuth0();
@@ -228,8 +227,6 @@ function Finder() {
                     <SearchIcon/>
                 </Button>
             </div>
-            <Footer/>
-
         </>
     );
 }
