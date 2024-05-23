@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {Navigate, useLocation, useNavigate} from 'react-router-dom';
 import Navigation from "../components/Navigation.jsx";
 import {Button, Chip, Divider} from "@nextui-org/react";
-import Footer from "../components/Footer.jsx";
 import {useAuth0} from "@auth0/auth0-react";
 import SearchCarousel from "../components/SearchCarousel.jsx";
 
@@ -74,14 +73,14 @@ function Search() {
             fetch(`https://api.themoviedb.org/3/search/multi?language=es-ES&query=${term}&page=${page}&include_adult=false`, options)
                 .then(res => res.json())
                 .then(data => {
-                    
+
                     setMoviesResults(data.results);
                     setTotalPages(data.total_pages);
                 });
         } else {
             let today = new Date();
             let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); // Los meses en JavaScript son de 0 a 11, por lo que se suma 1
+            let mm = String(today.getMonth() + 1).padStart(2, '0');
             let yyyy = today.getFullYear();
 
             let currentDate = yyyy + '-' + mm + '-' + dd;
@@ -232,7 +231,6 @@ function Search() {
                 <SearchCarousel movies={moviesResults} page={page} totalPages={totalPages}
                                 onPageChange={handlePageChange} userLikes={userLikes}/>
             </div>
-            <Footer/>
         </>
     );
 }

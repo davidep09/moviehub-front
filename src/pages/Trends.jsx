@@ -2,7 +2,6 @@ import {useState, useEffect} from "react";
 import Navigation from "../components/Navigation.jsx";
 import MoviesCarousel from "../components/MoviesCarousel.jsx";
 import {Divider} from "@nextui-org/react";
-import Footer from "../components/Footer.jsx";
 import {useAuth0} from "@auth0/auth0-react";
 import {Navigate} from "react-router-dom";
 
@@ -74,7 +73,6 @@ export default function Trends() {
             <h1 className="text-center text-2xl my-6">Tendencias de hoy</h1>
             <MoviesCarousel movies={movies} page={page} totalPages={totalPages} onPageChange={handlePageChange}
                             userLikes={userLikes}/>
-            <Footer/>
         </>
     );
 }

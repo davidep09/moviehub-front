@@ -2,7 +2,6 @@ import {Navigate, useParams} from "react-router-dom";
 import Navigation from "../components/Navigation.jsx";
 import {Button, Divider} from "@nextui-org/react";
 import {useEffect, useState} from "react";
-import Footer from "../components/Footer.jsx";
 import MovieCard from "../components/MovieCard.jsx";
 import DeleteIcon from "../components/icons/DeleteIcon.jsx";
 import {useAuth0} from "@auth0/auth0-react";
@@ -101,7 +100,6 @@ function List() {
                     </div>
                 </div>
             </div>
-            <Footer/>
         </>
     );
 }

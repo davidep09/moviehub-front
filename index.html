@@ -1,43 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<link rel="icon" type="image/svg+xml" href="" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>MovieHub - Descubre tus películas y series favoritas</title>
-		<link rel="icon" href="/src/assets/icons/favicon.svg" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Tac+One&display=swap"
-			rel="stylesheet"
-		/>
-	</head>
-	<body>
-		<div id="root"></div>
-		<script type="module">
-			// Import the functions you need from the SDKs you need
-			import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-			import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-analytics.js";
-			// TODO: Add SDKs for Firebase products that you want to use
-			// https://firebase.google.com/docs/web/setup#available-libraries
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MovieHub - Descubre tus películas y series favoritas</title>
+    <meta
+            name="description"
+            content="Descubre tus películas y series favoritas con MovieHub. Encuentra las mejores recomendaciones y disfruta de tus contenidos favoritos."
+    />
+    <meta
+            name="keywords"
+            content="moviehub, peliculas, series, recomendaciones, peliculas recomendadas, series recomendadas, peliculas populares, series populares"
+    />
+    <meta name="author" content="MovieHub"/>
+    <meta name="robots" content="index, follow"/>
+    <meta name="theme-color" content="#000000"/>
+    <meta name="msapplication-navbutton-color" content="#000000"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000000"/>
+    <meta name="google-site-verification" content="9"/>
+    <link rel="icon" href="/src/assets/icons/favicon.svg"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Tac+One&display=swap"
+            rel="stylesheet"
+    />
+</head>
+<body>
+<div id="root" class="flex flex-col min-h-screen">
+</div>
 
-			// Your web app's Firebase configuration
-			// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-			const firebaseConfig = {
-				apiKey: "AIzaSyB4VjllDWEd-4oEdjDdawoBf4Lp-cm6HAc",
-				authDomain: "moviehub-21023.firebaseapp.com",
-				projectId: "moviehub-21023",
-				storageBucket: "moviehub-21023.appspot.com",
-				messagingSenderId: "1052403155752",
-				appId: "1:1052403155752:web:c78c2f480c2cc1f376061d",
-				measurementId: "G-7Q2GV9L7VQ",
-			};
-
-			// Initialize Firebase
-			const app = initializeApp(firebaseConfig);
-			const analytics = getAnalytics(app);
-		</script>
-		<script type="module" src="/src/main.jsx"></script>
-	</body>
+<script type="module" src="/src/main.jsx"></script>
+</body>
 </html>

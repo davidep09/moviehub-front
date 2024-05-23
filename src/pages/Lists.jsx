@@ -1,5 +1,4 @@
 import Navigation from "../components/Navigation.jsx";
-import Footer from "../components/Footer.jsx";
 import {Button, Divider, Input} from "@nextui-org/react";
 import {useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
@@ -124,7 +123,6 @@ function Lists() {
                     </div>
                 </div>
             </div>
-            <Footer/>
         </>
     );
 }

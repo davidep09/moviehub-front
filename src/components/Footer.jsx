@@ -12,7 +12,7 @@ function Footer() {
                 </div>
                 <div className="flex flex-col items-center">
                     <p className="text-sm font-semibold md:mb-0 md:mr-2">Powered by:</p>
-                    <img src={tmdbLogo} alt="Logo de TMDB"
+                    <img src={tmdbLogo} alt="L  ogo de TMDB"
                          className="w-24 md:w-32 mb-2 md:mb-0 md:mr-2 object-contain"/>
                     <img src={justWatchLogo} alt="Logo de JustWatch" className="w-24 md:w-32 object-contain"/>
                 </div>

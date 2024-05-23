@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react';
 import {useAuth0} from '@auth0/auth0-react';
 import Navigation from "../components/Navigation.jsx";
 import {Divider} from "@nextui-org/react";
-import Footer from "../components/Footer.jsx";
 import FormProfile from "../components/FormProfile.jsx";
 import {Navigate} from "react-router-dom";
 
@@ -48,7 +47,6 @@ function Profile() {
             <Navigation/>
             <Divider/>
             <FormProfile usuario={userProfile}/>
-            <Footer/>
         </>
     );
 }
